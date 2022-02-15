@@ -1,0 +1,9 @@
+.accordion-button:focus {
+  box-shadow: none;
+  /*border-color: rgb(5, 151, 241);*/
+}
+
+.nowrap {
+  text-overflow: ellipsis;
+  overflow: hidden;
+} 

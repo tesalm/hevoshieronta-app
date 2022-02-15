@@ -1,0 +1,14 @@
+.main {
+  margin: auto;
+  width: 92%;
+  height: 100%;
+  max-width: 44rem;
+  padding-top: 1.5rem;
+}
+
+.container {
+  height: calc(100% - 60px);
+  position: absolute;
+  width: 100%;
+  overflow-y: auto;
+}

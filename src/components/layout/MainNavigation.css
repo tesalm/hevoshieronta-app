@@ -1,0 +1,29 @@
+.invisible {
+  visibility: hidden;
+}
+
+.visible {
+  visibility: visible;
+}
+
+.icon {
+  filter: invert(70%);
+  -webkit-filter: invert(70%);
+}
+
+.navibar {
+  width: 100%;
+  min-height: 60px;
+}
+
+.navbrand {
+  overflow: visible;
+  width: 8rem;
+  margin-right: 0;
+}
+
+.user {
+  overflow: visible;
+  justify-content: end;
+  width: 8rem;
+}

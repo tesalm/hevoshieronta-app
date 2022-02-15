@@ -1,0 +1,12 @@
+.login {
+  height: 90%;
+  display: flex;
+  margin: auto;
+  align-items: center;
+  justify-content: center;
+}
+
+h4 {
+  text-align: center;
+  margin-bottom: 2rem;
+}
