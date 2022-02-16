@@ -8,10 +8,14 @@ p {
   color: #282c34;
 }
 
-h3 {
+.title {
   margin-bottom: 0 !important;
+  padding-bottom: 2px;
   margin-top: 0;
+  text-align: start;
   color: #282c34;
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
 
 .name {

@@ -22,10 +22,10 @@ const SearchBar = ({ searchFilter }) => {
         value={query}
         onChange={setQueryHandler}
       />
-      <div className="d-flex bg-white">
+      <div className="bg-white d-flex">
         <CloseButton
           onClick={clearHandler}
-          className="my-auto px-3 py-2 shadow-none"
+          className="my-auto px-3 shadow-none"
         />
       </div>
       <Button className="shadow-none border-start bg-whitesmoke" variant="light" onClick={() => searchFilter(query)}>

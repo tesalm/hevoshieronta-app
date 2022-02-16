@@ -92,19 +92,24 @@ const Treatments = (props) => {
 
   const SearchTreatmentsByDate = () => (
     <Form onSubmit={fetchTreatmentsByDate}>
-      <Row className="mb-2 mx-auto justify-content-center" >
-        <Col xs={4} md={5} className="px-0" >
-          <Form.Control required type="date" name="start" defaultValue={range.start}/>
-        </Col>
-        <Col xs="auto" md="auto" className="px-1"><p className="my-auto">__</p></Col>
-        <Col xs={4} md={5} className="ps-0 pe-2">
-          <Form.Control required type="date"
-            defaultValue={range.end} name="end"/>
-        </Col>
-        <Col xs="auto" md="auto" className="px-0">
-          <Button type="submit">Hae</Button>
-        </Col>
-      </Row>
+      <div className="d-flex mb-1">
+        <Form.Control
+          required
+          type="date"
+          name="start"
+          defaultValue={range.start}
+          className="flex-grow-1 rounded-0"
+        />
+        <p className="pb-2 px-1 my-auto">__</p>
+        <Form.Control
+          required
+          type="date"
+          name="end"
+          defaultValue={range.end}
+          className="flex-grow-1 rounded-0"
+        />
+        <Button className="ms-1 rounded-0" type="submit">Hae</Button>
+      </div>
     </Form>
   );
 

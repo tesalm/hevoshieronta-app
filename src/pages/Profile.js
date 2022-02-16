@@ -76,10 +76,10 @@ const Profile = (props) => {
       <Form onSubmit={profileInfoSubmit} className="border rounded shadow-sm p-3 pt-4 mb-4 bg-white">
       <h4>Profiilin tiedot</h4>
         <Row className="mb-2">
-          <Col xs="auto" md={3} className="pe-0">
+          <Col xs="auto" sm={4} lg={3} className="pe-0">
             <p className="my-1">Nimi</p>
           </Col>
-          <Col xs={12} md={9}>
+          <Col xs={12} sm={8} lg={9}>
             <FormControl
               type="text"
               name="name"
@@ -90,10 +90,10 @@ const Profile = (props) => {
         </Row>
 
         <Row className="mb-2">
-          <Col xs="auto" md={3} className="pe-0">
+          <Col xs="auto" sm={4} lg={3} className="pe-0">
             <p className="my-1">Osoite</p>
           </Col>
-          <Col xs={12} md={9}>
+          <Col xs={12} sm={8} lg={9}>
             <FormControl
               type="text"
               name="address"
@@ -104,10 +104,10 @@ const Profile = (props) => {
         </Row>
 
         <Row className="mb-2">
-          <Col xs="auto" md={3} className="pe-0">
+          <Col xs="auto" sm={4} lg={3} className="pe-0">
             <p className="my-1">Puhelinnumero</p>
           </Col>
-          <Col xs={12} md={9}>
+          <Col xs={12} sm={8} lg={9}>
             <FormControl
               type="number"
               name="phone"
@@ -131,10 +131,10 @@ const Profile = (props) => {
       <Form onSubmit={accountAuthSubmit} className="border rounded shadow-sm p-3 pt-4 mb-3  bg-white">
         <h4>Tilin tiedot</h4>
         <Row className="mb-4">
-          <Col xs="auto" md={3} className="pe-0">
+          <Col xs="auto" sm={4} lg={3} className="pe-0">
             <p className="my-1">Nykyinen salasana <span style={{color:"red"}}>*</span></p>
           </Col>
-          <Col xs={12} md={9}>
+          <Col xs={12} sm={8} lg={9}>
             <FormControl
               type="password"
               name="currentPassw"
@@ -149,10 +149,10 @@ const Profile = (props) => {
         </Row>
 
         <Row className="mb-4">
-          <Col xs="auto" md={3} className="pe-0">
+          <Col xs="auto" sm={4} lg={3} className="pe-0">
             <p className="my-1">Sähköpostiosoite <span style={{color:"red"}}>*</span></p>
           </Col>
-          <Col xs={12} md={9}>
+          <Col xs={12} sm={8} lg={9}>
             <FormControl
               type="email"
               name="email"
@@ -168,10 +168,10 @@ const Profile = (props) => {
         </Row>
 
         <Row className="mb-2">
-          <Col xs="auto" md={3} className="pe-0">
+          <Col xs="auto" sm={4} lg={3} className="pe-0">
             <p className="my-1">Uusi salasana</p>
           </Col>
-          <Col xs={12} md={9}>
+          <Col xs={12} sm={8} lg={9}>
             <FormControl
               type="password"
               name="newPassw"
@@ -181,10 +181,10 @@ const Profile = (props) => {
           </Col>
         </Row>
         <Row>
-          <Col xs="auto" md={3} className="pe-0">
+          <Col xs="auto" sm={4} lg={3} className="pe-0">
             <p className="my-1">Vahvista salasana</p>
           </Col>
-          <Col xs={12} md={9}>
+          <Col xs={12} sm={8} lg={9}>
             <FormControl
               type="password"
               name="confNewPassw"

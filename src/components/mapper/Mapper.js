@@ -3,7 +3,7 @@ import ImageMapper from "react-img-mapper";
 import { loadAreas } from "./map-area-data";
 import horse from "./horse-superficial-muscles.png";
 import classes from "./Mapper.module.css";
-import { Accordion, Button, Form, Row, Col } from "react-bootstrap";
+import { Accordion, Button, Form } from "react-bootstrap";
 import AccordionItem from "../AccordionItem";
 import { setRows } from "../../util/general";
 import { massagesSchema } from "../../store/types";
@@ -83,26 +83,24 @@ const Mapper = ({treatments=massagesSchema, isReadOnly=true, setAreas}) => {
         />
       </div>
 
-      <Row className="pt-2">
-        <Col className="me-auto pe-0" md={9} xs={8} sm={8}>
+      <div className="d-flex align-items-center pt-2">
         {!areaDescription.description ? (
-          <p className="text-secondary nowrap">
+          <p className="text-secondary nowrap flex-grow-1">
             Klikkaa lihasaluetta saadaksesi lisätietoa.
           </p>
         ) : (
-          <div >
-            <h3>{areaDescription.title}</h3>
+          <div className="nowrap flex-grow-1">
+            <h5 className={classes.title}>{areaDescription.title}</h5>
             <p className={classes.name}>{areaDescription.name}</p>
           </div>
         )}
-        </Col>
-        <Col className="text-center" xs="auto" sm="auto">
+        <div className="ps-2 d-flex flex-column justify-content-end">
           <Button onClick={turnFlankHandler} variant="dark" className="py-1 shadow-none">
             Käännä
           </Button>
-          <p className="text-end fst-italic fw-bold mt-1 mb-0">{mirrored? "Vasen": "Oikea"} kylki</p>
-        </Col>
-      </Row>
+          <p className="nowrap text-center fst-italic fw-bold my-0">{mirrored? "Vasen": "Oikea"} kylki</p>
+        </div>
+      </div>
 
       <div className={classes.description}>
         {areaDescription.description && (
