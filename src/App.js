@@ -27,9 +27,17 @@ function App() {
       <Switch>
         {/* Redirect to the Treatments page, until home page is complete */}
         <Redirect exact from="/" to="/hoidot" />
-        <Route exact path="/kirjaudu" component={Login} />
-        <Route exact path="/rekisteroidy" component={Signup} />
+
+        <Route exact path="/kirjaudu" component={Login}>
+          {state.isAuthenticated === true && <Redirect to="/hoidot" />}
+        </Route>
+
+        <Route exact path="/rekisteroidy" component={Signup}>
+          {state.isAuthenticated === true && <Redirect to="/hoidot" />}
+        </Route>
+
         <Route exact path="/lihasryhmat" component={MuscleGroups} />
+
         <AuthRoute
           authenticated={state.isAuthenticated}
           exact

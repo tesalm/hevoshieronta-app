@@ -193,7 +193,7 @@ const clickableAreas = [
   },
 ];
 
-export const loadAreas = (treatments, side="rightFlank") => {
+export const loadAreas = (treatments, side="leftFlank") => {
   const areas = clickableAreas.map(area => {
     const treatment = treatments[side].find(t => t.id === area.id);
     return treatment ? {...area, treatment: treatment.desc, preFillColor:"#ff000050"} : area

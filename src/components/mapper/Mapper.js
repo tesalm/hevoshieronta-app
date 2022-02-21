@@ -56,7 +56,7 @@ const Mapper = ({treatments=massagesSchema, isReadOnly=true, setAreas}) => {
     const data = newAreaData
       .filter(a => a.treatment)
       .map(a => ({id:a.id, title:a.title, desc:a.treatment}));
-    const dbData = mirrored? {...treatments, "leftFlank":data} : {...treatments, "rightFlank":data};
+    const dbData = mirrored? {...treatments, "rightFlank":data} : {...treatments, "leftFlank":data};
 
     setMap({...map, areas: newAreaData});
     setAreas(dbData);
@@ -65,7 +65,7 @@ const Mapper = ({treatments=massagesSchema, isReadOnly=true, setAreas}) => {
 
   const turnFlankHandler = () => {
     setMirror(!mirrored);
-    const flank = !mirrored === true ? "leftFlank" : "rightFlank";
+    const flank = !mirrored === true ? "rightFlank" : "leftFlank";
     const areas = loadAreas(treatments, flank);
     setMap({...map, areas: areas});
   };
@@ -98,7 +98,7 @@ const Mapper = ({treatments=massagesSchema, isReadOnly=true, setAreas}) => {
           <Button onClick={turnFlankHandler} variant="dark" className="py-1 shadow-none">
             Käännä
           </Button>
-          <p className="nowrap text-center fst-italic fw-bold my-0">{mirrored? "Vasen": "Oikea"} kylki</p>
+          <p className="nowrap text-center fst-italic fw-bold my-0">{mirrored? "Oikea": "Vasen"} kylki</p>
         </div>
       </div>
 
