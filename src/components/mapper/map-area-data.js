@@ -173,15 +173,15 @@ const clickableAreas = [
     "strokeColor": "transparent",
     "coords": [369,367,363,373,360,390,360,410,362,434,369,451,377,476,382,476,385,439,385,419,383,393,378,378],
   },
-  /*{
+  {
     "id": 20,
-    "title": "Extensor digitorum lateralis",
+    "title": "Obliquus externus abdominis",
     "shape": "poly",
-    "name": "Varpaan uloin ojentajalihas",
-    "description": "Ojentaa varvasta ja koukistaa kinnerniveltä.",
+    "name": "Ulompi vino vatsalihas",
+    "description": "Kannattelee vatsaontelon elimiä, avustaa ulostamisessa, synnytysponnistuksissa ja uloshengityksessä.",
     "strokeColor": "transparent",
-    "coords": [],
-  },*/
+    "coords": [449,356,492,373,522,368,545,353,570,332,598,300,623,274,644,249,661,229,661,212,652,199,639,193,625,197,613,209,593,235,572,259,554,281,530,301,509,316,483,328,459,339,452,344,448,350],
+  },
   {
     "id": 21,
     "title": "Extensor carpi ulnaris",
