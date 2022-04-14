@@ -63,6 +63,20 @@ export async function postTreatmentApiRequest(formData) {
   return data;
 }
 
+export async function postNewTreatmentApiRequest(formData) {
+  const res = await fetch(`${api}/new-treatment`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: localStorage.FBIdToken,
+    },
+    body: JSON.stringify(formData),
+  });
+  const data = await res.json();
+  if (!res.ok) throw {message: data.error, cause: res.status};
+  return data;
+}
+
 export async function updateTreatmentApiRequest(formData, id) {
   const res = await fetch(`${api}/treatment/${id}`, {
     method: "POST",

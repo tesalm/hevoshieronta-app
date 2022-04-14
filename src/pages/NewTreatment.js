@@ -1,7 +1,7 @@
 import { useContext, useEffect } from "react";
 import classes from "./NewTreatment.module.css";
 import ContextProvider from "../store/context-reducer";
-import { postTreatment, verifySession } from "../store/actions";
+import { postTreatmentCard, verifySession } from "../store/actions";
 import TreatmentForm from "../components/TreatmentForm";
 import confirmService from '../components/confirm-service';
 
@@ -29,7 +29,7 @@ const NewTreatment = (props) => {
       event.stopPropagation();
     }
 
-    const res = await postTreatment(formData, dispatch);
+    const res = await postTreatmentCard(formData, dispatch);
     if (res) form.reset();
     document.getElementById("content").scrollTo({top:0, left:0, behavior:"smooth"});
   };

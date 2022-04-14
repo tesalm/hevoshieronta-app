@@ -4,6 +4,7 @@ import {
   getTreatmentsByDateApiRequest,
   getProfileDataApiRequest,
   postTreatmentApiRequest,
+  postNewTreatmentApiRequest,
   updateTreatmentApiRequest,
   updateAccountAuthApiRequest,
   updateProfileInfoApiRequest } from "../util/api";
@@ -60,14 +61,31 @@ export async function getTreatmentsByDate(dispatch, start, end) {
 };
 
 
-export async function postTreatment(formData, dispatch) {
+export async function postTreatmentCard(formData, dispatch) {
   try {
     const res = await postTreatmentApiRequest(formData); 
     dispatch({
       type: NEW_TREATMENT,
-      payload: res
+      payload: {treatment: res, msg: "Hoitohakemus lähetetty"}
     });
     return true;
+
+  } catch (err) {
+    const pload = err.cause ? { err: err.message, code: err.cause }
+      : { err: "Palvelimeen ei saatu yhteyttä" };
+    dispatch({ type: REQUEST_FAILURE, payload: pload });
+  }
+};
+
+
+export async function postNewTreatment(treatment, dispatch) {
+  try {
+    const res = await postNewTreatmentApiRequest(treatment); 
+    dispatch({
+      type: NEW_TREATMENT,
+      payload: {treatment: res, msg: "Uusi hoito luotu"}
+    });
+    return res;
 
   } catch (err) {
     const pload = err.cause ? { err: err.message, code: err.cause }

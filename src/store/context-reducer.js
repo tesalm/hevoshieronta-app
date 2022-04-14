@@ -96,12 +96,12 @@ const reducer = (state, action) => {
       };
     case NEW_TREATMENT:
       const currState = {...state};
-      currState.treatments.unshift(action.payload)
+      currState.treatments.unshift(action.payload.treatment)
       return {
         ...state,
         loading: false,
         notification: {
-          message: "Hoitohakemus lähetetty.",
+          message: action.payload.msg,
           type: "success" },
         treatments: currState.treatments
       };
