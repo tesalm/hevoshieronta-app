@@ -91,6 +91,19 @@ export async function updateTreatmentApiRequest(formData, id) {
   return res.ok;
 }
 
+export async function deleteTreatmentApiRequest(id) {
+  const res = await fetch(`${api}/treatment/${id}`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: localStorage.FBIdToken,
+    },
+  });
+  const data = await res.json();
+  if (!res.ok) throw {message: data.error, cause: res.status};
+  return res.ok;
+}
+
 export async function updateAccountAuthApiRequest(credentials) {
   const res = await fetch(api + "/user/account", {
     method: "POST",

@@ -5,7 +5,7 @@ import TreatmentForm from "../components/TreatmentForm";
 import AccordionItem from "../components/AccordionItem";
 import confirmService from "../components/confirm-service";
 import ContextProvider from "../store/context-reducer";
-import { updateTreatment, postNewTreatment } from "../store/actions";
+import { updateTreatment, postNewTreatment, deleteTreatment } from "../store/actions";
 import { HANDLER, massagesSchema } from "../store/types";
 import { setRows, updateRows } from "../util/general";
 import "./TreatmentDetails.css"
@@ -44,11 +44,25 @@ const TreatmentDetails = (props) => {
     setLoading(true);
     const res = await postNewTreatment(treatment, dispatch);
     setLoading(false);
-    
+
     props.history.replace({
       pathname: "/hoidot/hoitotiedot/" + res.treatmentId,
       state: res
     });
+    document.getElementById("content").scrollTo({top:0, left:0, behavior:"smooth"});
+  };
+
+  const submitDeleteTreatment = async () => {
+    const isTreated = (treatedAreas.leftFlank.length || treatedAreas.rightFlank.length) > 0 ? true : false;
+    if (isTreated) return await confirmService.show({btnLabel: "OK", message: "Hoito sisältää hierontoja! Tyhjennä hierontatiedot ennen poistamista."});
+    const confirm = await confirmService.show({btnLabel: "Poista", message: "Vahvista poisto kirjoittamalla POISTA", confDeletion: true});
+    if (!confirm) return;
+
+    setLoading(true);
+    const res = await deleteTreatment(state.treatmentId, dispatch);
+    setLoading(false);
+
+    if (res) props.history.replace("/hoidot");
     document.getElementById("content").scrollTo({top:0, left:0, behavior:"smooth"});
   };
 
@@ -91,10 +105,13 @@ const TreatmentDetails = (props) => {
 
       {isReadOnly === false && (
         <div className="d-flex justify-content-end">
-          <Button onClick={submitNewTreatment} className="me-3 rounded-0" style={{ minWidth: "6rem" }}>
+          <Button onClick={submitDeleteTreatment} disabled={loading} variant="danger" className="me-auto rounded-0 fw-bold" style={{ minWidth: "5rem" }}>
+            {loading ? <Spinner animation="border" size="sm" /> : "Poista"}
+          </Button>
+          <Button onClick={submitNewTreatment} disabled={loading} className="me-3 rounded-0" style={{ minWidth: "6rem" }}>
             {loading ? <Spinner animation="border" size="sm" /> : "Uusi hoito"}
           </Button>
-          <Button onClick={submitTreatmentUpdate} variant="success" className="rounded-0" style={{ minWidth: "6rem" }}>
+          <Button onClick={submitTreatmentUpdate} disabled={loading} variant="success" className="rounded-0" style={{ minWidth: "6rem" }}>
             {loading ? <Spinner animation="border" size="sm" /> : "Tallenna"}
           </Button>
         </div>

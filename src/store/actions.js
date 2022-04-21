@@ -5,10 +5,11 @@ import {
   getProfileDataApiRequest,
   postTreatmentApiRequest,
   postNewTreatmentApiRequest,
+  deleteTreatmentApiRequest,
   updateTreatmentApiRequest,
   updateAccountAuthApiRequest,
   updateProfileInfoApiRequest } from "../util/api";
-import { LOGIN, LOADING, REQUEST_FAILURE, SET_TREATMENTS, NOTIFY, NEW_TREATMENT } from "./types";
+import { LOGIN, LOADING, REQUEST_FAILURE, SET_TREATMENTS, NOTIFY, NEW_TREATMENT, DELETE_TREATMENT } from "./types";
 import jwtDecode from "jwt-decode";
 
 export async function signinUser(credentials, history, dispatch, isNewUser=false) {
@@ -102,6 +103,20 @@ export async function updateTreatment(formData, id, dispatch) {
       type: NOTIFY,
       payload: { msg: "Hoito tallennettu.", type: "success" },
     });
+    return res;
+
+  } catch (err) {
+    const pload = err.cause ? { err: err.message, code: err.cause }
+      : { err: "Palvelimeen ei saatu yhteyttä" };
+    dispatch({ type: REQUEST_FAILURE, payload: pload });
+  }
+};
+
+
+export async function deleteTreatment(id, dispatch) {
+  try {
+    const res = await deleteTreatmentApiRequest(id);
+    dispatch({ type: DELETE_TREATMENT, payload: id });
     return res;
 
   } catch (err) {

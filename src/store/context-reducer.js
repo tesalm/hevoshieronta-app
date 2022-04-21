@@ -1,5 +1,5 @@
 import { createContext, useReducer } from "react";
-import { LOGIN, LOGOUT, LOADING, REQUEST_FAILURE, SET_TREATMENTS, NEW_TREATMENT, SET_USER, SET_UNAUTHENTICATED, NOTIFY, UPDATE_PROFILE, UPDATE_ACCOUNT } from "./types";
+import { LOGIN, LOGOUT, LOADING, REQUEST_FAILURE, SET_TREATMENTS, NEW_TREATMENT, DELETE_TREATMENT, SET_USER, SET_UNAUTHENTICATED, NOTIFY, UPDATE_PROFILE, UPDATE_ACCOUNT } from "./types";
 
 const ContextProvider = createContext();
 
@@ -104,6 +104,17 @@ const reducer = (state, action) => {
           message: action.payload.msg,
           type: "success" },
         treatments: currState.treatments
+      };
+    case DELETE_TREATMENT:
+      const treatments = state.treatments;
+      treatments.splice(treatments.findIndex(t => t.treatmentId === action.payload), 1);
+      return {
+        ...state,
+        loading: false,
+        notification: {
+          message: `Hoito ${action.payload} poistettu`,
+          type: "success" },
+        treatments: treatments
       };
     case NOTIFY:
       return {
