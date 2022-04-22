@@ -1,5 +1,5 @@
 import { useContext, useState, useEffect } from "react";
-import { Button, FormControl, Form, Spinner, Row, Col } from "react-bootstrap";
+import { FormControl, Form, Spinner, Row, Col } from "react-bootstrap";
 import ContextProvider from "../store/context-reducer";
 import { updateAccountAuth, updateProfileInfo, getProfileData, verifySession } from "../store/actions";
 import confirmService from '../components/confirm-service';
@@ -118,13 +118,13 @@ const Profile = (props) => {
         </Row>
 
         <div className="d-flex justify-content-end">
-          <Button type="submit" className="shadow-none rounded-pill mt-2" style={{minWidth:"8rem"}}>
+          <button type="submit" className="btn-custom mt-2">
             {loadingProf ? (
               <Spinner animation="border" size="sm" />
               ) : (
               "Tallenna"
             )}
-          </Button>
+          </button>
         </div>
       </Form>
 
@@ -198,13 +198,13 @@ const Profile = (props) => {
         </Row>
 
         <div className="d-flex justify-content-end">
-          <Button disabled={!validateAuthForm()} type="submit" className="shadow-none rounded-pill mt-2" style={{minWidth:"8rem"}}>
+          <button disabled={!validateAuthForm()} type="submit" className="btn-custom mt-2">
             {loadingAuth ? (
               <Spinner animation="border" size="sm" />
               ) : (
               "Tallenna"
             )}
-          </Button>
+          </button>
         </div>
       </Form>
     </div>

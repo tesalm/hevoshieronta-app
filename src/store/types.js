@@ -16,7 +16,7 @@ export const UPDATE_PROFILE = "UPDATE_PROFILE";
 
 // User types
 export const OWNER = "omistaja";
-export const HANDLER = "hoitaja";
+export const THERAPIST = "hoitaja";
 
 // Icons and image urls
 export const PROFILE_ICON = "https://res.cloudinary.com/djviqofzs/image/upload/v1636981580/hh-web/user_isgb6s.png";

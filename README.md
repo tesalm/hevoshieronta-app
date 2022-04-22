@@ -2,8 +2,6 @@
 
 Freelance projektina toteutettu hevoshieronta palveluiden hallintaan tarkoitettu web-sovellus.
 
-Projektin asiakas on Horseflea Oy. Horseflea yritys on perustettu vuonna 2014, jonka kotipaikka on Kangasala, ja pääasiallinen toimiala Eläintarvike- ja eläinkauppa. Projektin yhteyshenkilö on Eeva Pernitz.
-
 ### Demo
 Projektin demo-versiota voi tarkastella osoitteessa https://hevoshieronta-demo.web.app
 

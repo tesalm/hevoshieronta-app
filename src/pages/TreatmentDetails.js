@@ -1,12 +1,12 @@
 import { useContext, useState, useRef } from "react";
-import { Form, Spinner, Accordion, Button } from "react-bootstrap";
+import { Form, Spinner, Accordion } from "react-bootstrap";
 import Mapper from "../components/mapper/Mapper";
 import TreatmentForm from "../components/TreatmentForm";
 import AccordionItem from "../components/AccordionItem";
 import confirmService from "../components/confirm-service";
 import ContextProvider from "../store/context-reducer";
 import { updateTreatment, postNewTreatment, deleteTreatment } from "../store/actions";
-import { HANDLER, massagesSchema } from "../store/types";
+import { THERAPIST, massagesSchema } from "../store/types";
 import { setRows, updateRows } from "../util/general";
 import "./TreatmentDetails.css"
 
@@ -17,7 +17,7 @@ const TreatmentDetails = (props) => {
   const {state} = props.location;
   const [loading, setLoading] = useState(false);
   const [treatedAreas, setAreas] = useState(state ? state.treatment.massages : massagesSchema);
-  const isReadOnly = localStorage.role === HANDLER ? false : true;
+  const isReadOnly = localStorage.role === THERAPIST ? false : true;
 
   const submitTreatmentUpdate = async () => {
     const confirm = await confirmService.show({btnLabel: "Tallenna", message: "Tallenna hoitotiedot?"});
@@ -105,15 +105,15 @@ const TreatmentDetails = (props) => {
 
       {isReadOnly === false && (
         <div className="d-flex justify-content-end">
-          <Button onClick={submitDeleteTreatment} disabled={loading} variant="danger" className="me-auto rounded-0 fw-bold" style={{ minWidth: "5rem" }}>
+          <button onClick={submitDeleteTreatment} disabled={loading} className="btn-custom danger me-auto">
             {loading ? <Spinner animation="border" size="sm" /> : "Poista"}
-          </Button>
-          <Button onClick={submitNewTreatment} disabled={loading} className="me-3 rounded-0" style={{ minWidth: "6rem" }}>
+          </button>
+          <button onClick={submitNewTreatment} disabled={loading} className="btn-custom me-2">
             {loading ? <Spinner animation="border" size="sm" /> : "Uusi hoito"}
-          </Button>
-          <Button onClick={submitTreatmentUpdate} disabled={loading} variant="success" className="rounded-0" style={{ minWidth: "6rem" }}>
+          </button>
+          <button onClick={submitTreatmentUpdate} disabled={loading} className="btn-custom">
             {loading ? <Spinner animation="border" size="sm" /> : "Tallenna"}
-          </Button>
+          </button>
         </div>
       )}
     </div>

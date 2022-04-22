@@ -9,7 +9,7 @@ import {
   updateTreatmentApiRequest,
   updateAccountAuthApiRequest,
   updateProfileInfoApiRequest } from "../util/api";
-import { LOGIN, LOADING, REQUEST_FAILURE, SET_TREATMENTS, NOTIFY, NEW_TREATMENT, DELETE_TREATMENT } from "./types";
+import { LOGIN, LOGOUT, LOADING, REQUEST_FAILURE, SET_TREATMENTS, NOTIFY, NEW_TREATMENT, DELETE_TREATMENT, SET_USER, UPDATE_ACCOUNT, UPDATE_PROFILE } from "./types";
 import jwtDecode from "jwt-decode";
 
 export async function signinUser(credentials, history, dispatch, isNewUser=false) {
@@ -130,7 +130,7 @@ export async function deleteTreatment(id, dispatch) {
 export async function updateAccountAuth(credentials, dispatch) {
   try {
     const res = await updateAccountAuthApiRequest(credentials);
-    dispatch({ type: "UPDATE_ACCOUNT", payload: res });
+    dispatch({ type: UPDATE_ACCOUNT, payload: res });
     return res;
 
   } catch (err) {
@@ -144,7 +144,7 @@ export async function updateAccountAuth(credentials, dispatch) {
 export async function updateProfileInfo(profileInfo, dispatch) {
   try {
     const res = await updateProfileInfoApiRequest(profileInfo);
-    dispatch({ type: "UPDATE_PROFILE", payload: profileInfo });
+    dispatch({ type: UPDATE_PROFILE, payload: profileInfo });
     return res;
 
   } catch (err) {
@@ -163,7 +163,7 @@ export async function getProfileData(dispatch) {
       address: res.address,
       phone: res.phone
     }
-    dispatch({ type: "SET_USER", payload: data });
+    dispatch({ type: SET_USER, payload: data });
     return res;
 
   } catch (err) {
@@ -177,7 +177,7 @@ export function verifySession(dispatch) {
   if (token) {
     const decodedToken = jwtDecode(token);
     if (decodedToken.exp * 1000 < Date.now()) {
-      dispatch({ type: "LOGOUT" });
+      dispatch({ type: LOGOUT });
       dispatch({
         type: NOTIFY,
         payload: { msg: "Istuntosi on vanhentunut", type: "danger" },

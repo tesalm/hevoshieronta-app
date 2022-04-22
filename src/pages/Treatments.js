@@ -4,7 +4,7 @@ import "./Treatments.css";
 import ContextProvider from "../store/context-reducer";
 import SearchBar from "../components/SearchBar";
 import { getTreatments, getTreatmentsByDate, verifySession } from "../store/actions";
-import { OWNER, HANDLER } from "../store/types";
+import { OWNER, THERAPIST } from "../store/types";
 
 
 const Treatments = (props) => {
@@ -123,7 +123,7 @@ const Treatments = (props) => {
     <div className="mx-auto page">
       <div className="px-3 pt-4 pb-5 bg-white border rounded shadow-sm">
         <h4>Hoidot</h4>
-        {(localStorage.role === HANDLER) && <SearchTreatmentsByDate/>}
+        {(localStorage.role === THERAPIST) && <SearchTreatmentsByDate/>}
         <SearchBar searchFilter={searchFilter} />
         {loading ? <LoadingSpinner/> : treatments.length > 0 ? (
           filteredData.length > 0 ? ( 

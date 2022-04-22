@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Form, Col, Row, Button, Spinner } from "react-bootstrap";
+import { Form, Col, Row, Spinner } from "react-bootstrap";
 import { setRows, updateRows } from "../util/general"
 
 
@@ -308,9 +308,9 @@ const TreatmentForm = ({
 
       {isReadOnly === false && (
         <div className="d-flex justify-content-end">
-          <Button type="submit" variant="success" style={{minWidth: "8rem"}} onClick={() => setValidated(true)}>
+          <button type="submit" className="btn-custom wide" onClick={() => setValidated(true)}>
             {loading ? <Spinner animation="border" size="sm" /> : "Lähetä"}
-          </Button>
+          </button>
         </div>
       )}
     </Form>
