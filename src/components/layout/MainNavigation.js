@@ -5,7 +5,7 @@ import { useHistory } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import ContextProvider from "../../store/context-reducer";
 import { PROFILE_ICON, LOGIN_ICON, LOGOUT } from "../../store/types";
-import "./MainNavigation.css";
+import styles from "../../styles/MainNavigation.module.css";
 
 function MainNavigation() {
   const history = useHistory();
@@ -18,13 +18,13 @@ function MainNavigation() {
   };
 
   return (
-    <div className="navibar">
+    <div className={styles.navibar}>
       <Navbar bg="dark" variant="dark" expand="lg"
         onSelect={() => toggleNav(false)}
         onToggle={(exp) => toggleNav(exp)} expanded={expanded}
       >
         <Container fluid="xl">
-          <LinkContainer to="/" exact className="navbrand">
+          <LinkContainer to="/" exact className={styles.navbrand}>
             <Navbar.Brand>Hevoshieronta</Navbar.Brand>
           </LinkContainer>
           <Navbar.Toggle aria-controls="basic-navbar-nav" className="shadow-none"/>
@@ -42,10 +42,10 @@ function MainNavigation() {
                 </LinkContainer>
               )}
             </Nav>
-            <Nav className="user">
+            <Nav className={styles.user}>
               {state.isAuthenticated ? (<>
                 <NavDropdown
-                  title={<><img height="26px" className="pe-2 icon" src={PROFILE_ICON} alt=""/>{state.profile.email}</>}
+                  title={<><img height="26px" className={styles.icon} src={PROFILE_ICON} alt=""/>{state.profile.email}</>}
                   className="ms-auto"
                   id="basic-nav-dropdown"
                   onSelect={() => toggleNav(false)}
@@ -61,7 +61,7 @@ function MainNavigation() {
                 </>) : (
                 <LinkContainer to="/kirjaudu" exact>
                   <Nav.Link>
-                    {<><img height="19px" className="pe-2 icon" src={LOGIN_ICON} alt=""/>Kirjaudu</>}
+                    {<><img height="19px" className={styles.icon} src={LOGIN_ICON} alt=""/>Kirjaudu</>}
                   </Nav.Link>
                 </LinkContainer>
               )}

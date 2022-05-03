@@ -74,8 +74,8 @@ class Confirm extends PureComponent {
           )}
         </Modal.Body>
         <Modal.Footer className="border-0 pt-0">
-          <Button variant="success rounded-0" onClick={this.handleConfirm}>{btnLabel}</Button>
-          <Button variant="secondary rounded-0" onClick={this.handleCancel}>Peruuta</Button>
+          <Button variant="success" onClick={this.handleConfirm}>{btnLabel}</Button>
+          <Button variant="secondary" onClick={this.handleCancel}>Peruuta</Button>
         </Modal.Footer>
       </Modal>
     );

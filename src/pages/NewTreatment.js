@@ -1,5 +1,5 @@
 import { useContext, useEffect } from "react";
-import classes from "./NewTreatment.module.css";
+import styles from "../styles/NewTreatment.module.css";
 import ContextProvider from "../store/context-reducer";
 import { postTreatmentCard, verifySession } from "../store/actions";
 import TreatmentForm from "../components/TreatmentForm";
@@ -35,8 +35,8 @@ const NewTreatment = (props) => {
   };
 
   return (
-    <div className="p-3 pt-4 mb-3 border rounded shadow-sm bg-white">
-      <h4 className={classes.formTitle}>Hoitokortti</h4>
+    <div className={styles.formBackground}>
+      <h4 className={styles.formTitle}>Hoitokortti</h4>
       <TreatmentForm handleSubmit={handleSubmit} formData={formDefaults}/>
     </div>
   );

@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { Button, Spinner, Card, Row, Col, Form } from "react-bootstrap";
-import "./Treatments.css";
+import styles from "../styles/Treatments.module.css";
 import ContextProvider from "../store/context-reducer";
 import SearchBar from "../components/SearchBar";
 import { getTreatments, getTreatmentsByDate, verifySession } from "../store/actions";
@@ -62,7 +62,7 @@ const Treatments = (props) => {
 
   const TreatmentCard = ({ card }) => (
     <Card onClick={() => getTreatment(card)}
-      className={`card${card.treatment.treated && "-ready"} shadow-sm`}>
+      className={card.treatment.treated ? styles.cardReady : styles.card}>
       <Card.Body className="p-3">
         <Row>
           <Col className="text-start nowrap">Hoito {card.treatmentId}</Col>
@@ -120,7 +120,7 @@ const Treatments = (props) => {
   );
 
   return (
-    <div className="mx-auto page">
+    <div className={styles.page}>
       <div className="px-3 pt-4 pb-5 bg-white border rounded shadow-sm">
         <h4>Hoidot</h4>
         {(localStorage.role === THERAPIST) && <SearchTreatmentsByDate/>}

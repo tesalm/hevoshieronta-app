@@ -1,4 +1,10 @@
-.card {
+.cardReady {
+  border-left-width: 5px;
+  border-left-color: #00800077;
+  background: linear-gradient(to right, #00800035 1%, #00800025 3%, #00800015 8%, transparent 40%);
+}
+
+.card, .cardReady {
   border-radius: 0px;
   /*background: #fff;
   box-shadow: 0 6px 10px rgba(0,0,0,.08), 0 0 6px rgba(0,0,0,.05);
@@ -10,39 +16,18 @@
   border-left: none;
   transition: all 0.1s ease;
   cursor: pointer;
-  background-color: transparent; /*rgba(0, 140, 255, 0.03);*/
+  background-color: transparent;
+  box-shadow: 0 .125rem .25rem rgba(0, 0, 0, .075); /* shadow-sm */
 }
 
-.card:hover {
+.card:hover, .cardReady:hover {
   background-color: rgba(0, 140, 255, 0.09);
   /*transform: scale(1.04);
   box-shadow: 0 10px 20px rgba(0,0,0,.12), 0 4px 8px rgba(0,0,0,.06);*/
 }
 
-.card-ready {
-  border-left-width: 5px;
-  border-left-color: #00800077;
-  background: linear-gradient(to right, #00800035 1%, #00800025 3%, #00800015 8%, transparent 40%);
-}
-
 .page {
   max-width: 36rem;
+  margin-left: auto;
+  margin-right: auto;
 }
-
-.spinner {
-  height: 100%;
-  display: flex;
-  margin: auto;
-  align-items: center;
-  justify-content: center;
-  /*position: fixed;
-  top: 45%;
-  left: 50%;
-  transform: translate(-50%,-50%);*/
-}
-
-.nowrap {
-  text-overflow: ellipsis;
-  overflow: hidden;
-  white-space: nowrap;
-} 

@@ -8,7 +8,6 @@ import ContextProvider from "../store/context-reducer";
 import { updateTreatment, postNewTreatment, deleteTreatment } from "../store/actions";
 import { THERAPIST, massagesSchema } from "../store/types";
 import { setRows, updateRows } from "../util/general";
-import "./TreatmentDetails.css"
 
 
 const TreatmentDetails = (props) => {

@@ -1,7 +1,7 @@
 import { useContext, useState } from "react";
 import { Button, FormGroup, FormControl, FormLabel, Form, Spinner } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import classes from "./Login.module.css";
+import styles from "../styles/Login.module.css";
 import ContextProvider from "../store/context-reducer";
 import { signinUser } from "../store/actions";
 
@@ -38,7 +38,7 @@ const Signup = (props) => {
   };
 
     return (
-      <div className={classes.login}>
+      <div className={styles.login}>
         <Form onSubmit={handleSubmit} className="bg-white border rounded shadow-sm p-3">
           <h4>Rekisteröi tilisi</h4>
           <FormGroup className="mb-3 mt-2" controlId="user">

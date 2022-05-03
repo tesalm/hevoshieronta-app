@@ -1,7 +1,7 @@
-import classes from "./NotFound.module.css";
+import styles from "../styles/NotFound.module.css";
 
 const NotFound = () => (
-  <div className={classes.notfound}>
+  <div className={styles.notfound}>
     <div>
       <h1>404</h1>
       <h2>Sivua ei löydy!</h2>

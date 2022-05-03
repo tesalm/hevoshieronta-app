@@ -1,4 +1,4 @@
-import classes from "./Layout.module.css";
+import styles from "../../styles/Layout.module.css";
 import MainNavigation from "./MainNavigation";
 import Notification from "../Notification";
 
@@ -6,9 +6,9 @@ function Layout(props) {
   return (
     <div>
       <MainNavigation />
-      <div className={classes.container} id="content">
+      <div className={styles.container} id="content">
         <Notification />
-        <main className={classes.main}>
+        <main className={styles.main}>
           {props.children}
         </main>
       </div>

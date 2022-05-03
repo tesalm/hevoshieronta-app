@@ -1,7 +1,7 @@
 import { useContext, useState } from "react";
 import { Button, FormGroup, FormControl, FormLabel, Form, Spinner, Modal, Row, Col } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import classes from "./Login.module.css";
+import styles from "../styles/Login.module.css";
 import ContextProvider from "../store/context-reducer";
 import { signinUser } from "../store/actions";
 import { resetPasswordRequest } from "../util/api";
@@ -65,7 +65,7 @@ const Login = (props) => {
   );
 
   return (
-    <div className={classes.login}>
+    <div className={styles.login}>
       <ResetPasswordModal />
       <Form onSubmit={handleSubmit} className="bg-white border rounded shadow-sm p-3">
         <h4>Sisäänkirjautuminen</h4>

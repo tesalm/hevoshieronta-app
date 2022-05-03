@@ -2,7 +2,7 @@ import { useRef, useLayoutEffect, useState } from "react";
 import ImageMapper from "react-img-mapper";
 import { loadAreas } from "./map-area-data";
 import horse from "./horse-superficial-muscles.png";
-import classes from "./Mapper.module.css";
+import styles from "../../styles/Mapper.module.css";
 import { Accordion, Button, Form } from "react-bootstrap";
 import AccordionItem from "../AccordionItem";
 import { setRows } from "../../util/general";
@@ -71,8 +71,8 @@ const Mapper = ({treatments=massagesSchema, isReadOnly=true, setAreas}) => {
   };
 
   return (
-    <div ref={parentRef} className={classes.mapper}>
-      <div className={mirrored ? classes.mirrored : ""}>
+    <div ref={parentRef} className={styles.mapper}>
+      <div className={mirrored ? styles.mirrored : ""}>
         <ImageMapper
           src={horse}
           map={map}
@@ -90,19 +90,19 @@ const Mapper = ({treatments=massagesSchema, isReadOnly=true, setAreas}) => {
           </p>
         ) : (
           <div className="nowrap flex-grow-1">
-            <h5 className={classes.title}>{areaDescription.title}</h5>
-            <p className={classes.name}>{areaDescription.name}</p>
+            <h5 className={styles.title}>{areaDescription.title}</h5>
+            <p className={styles.name}>{areaDescription.name}</p>
           </div>
         )}
         <div className="ps-2 d-flex flex-column justify-content-end">
-          <Button onClick={turnFlankHandler} variant="dark" className="py-1 shadow-none">
+          <Button onClick={turnFlankHandler} variant="dark" className="py-1">
             Käännä
           </Button>
-          <p className="nowrap text-center fst-italic fw-bold my-0">{mirrored? "Oikea": "Vasen"} kylki</p>
+          <p className={styles.flankStateTxt}>{mirrored? "Oikea": "Vasen"} kylki</p>
         </div>
       </div>
 
-      <div className={classes.description}>
+      <div className={styles.description}>
         {areaDescription.description && (
           <Accordion>
             <AccordionItem

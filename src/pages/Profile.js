@@ -128,7 +128,7 @@ const Profile = (props) => {
         </div>
       </Form>
 
-      <Form onSubmit={accountAuthSubmit} className="border rounded shadow-sm p-3 pt-4 mb-3  bg-white">
+      <Form onSubmit={accountAuthSubmit} className="border rounded shadow-sm p-3 pt-4 mb-3 bg-white">
         <h4>Tilin tiedot</h4>
         <Row className="mb-4">
           <Col xs="auto" sm={4} lg={3} className="pe-0">

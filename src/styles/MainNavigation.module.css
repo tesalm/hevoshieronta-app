@@ -7,6 +7,7 @@
 }
 
 .icon {
+  padding-right: 0.5rem;
   filter: invert(70%);
   -webkit-filter: invert(70%);
 }

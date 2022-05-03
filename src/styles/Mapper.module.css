@@ -38,7 +38,13 @@ p {
   transform: scaleX(-1);
 }
 
-.nowrap {
+.flankStateTxt {
   text-overflow: ellipsis;
   overflow: hidden;
-} 
+  white-space: nowrap;
+  text-align: center;
+  font-style: italic;
+  font-weight: bold;
+  margin-top: 0;
+  margin-bottom: 0;
+}
