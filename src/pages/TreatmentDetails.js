@@ -1,13 +1,13 @@
-import { useContext, useState, useRef } from "react";
+import { useContext, useState, useRef, useEffect } from "react";
 import { Form, Spinner, Accordion } from "react-bootstrap";
 import Mapper from "../components/mapper/Mapper";
 import TreatmentForm from "../components/TreatmentForm";
 import AccordionItem from "../components/AccordionItem";
 import confirmService from "../components/confirm-service";
 import ContextProvider from "../store/context-reducer";
-import { updateTreatment, postNewTreatment, deleteTreatment } from "../store/actions";
+import { updateTreatment, postNewTreatment, deleteTreatment, verifySession } from "../store/actions";
 import { THERAPIST, massagesSchema } from "../store/types";
-import { setRows, updateRows } from "../util/general";
+import { setRows, updateRows, scrollToTop } from "../util/general";
 
 
 const TreatmentDetails = (props) => {
@@ -18,27 +18,47 @@ const TreatmentDetails = (props) => {
   const [treatedAreas, setAreas] = useState(state ? state.treatment.massages : massagesSchema);
   const isReadOnly = localStorage.role === THERAPIST ? false : true;
 
+  useEffect(() => { verifySession(dispatch); }, []);
+
+  const isTreated = () => {
+    if ((treatedAreas.leftFlank.length || treatedAreas.rightFlank.length) > 0)
+      return true;
+    return false;
+  };
+
   const submitTreatmentUpdate = async () => {
-    const confirm = await confirmService.show({btnLabel: "Tallenna", message: "Tallenna hoitotiedot?"});
+    const confirm = await confirmService.show({
+      btnLabel: "Tallenna",
+      message: "Tallenna hoitotiedot?",
+    });
     if (!confirm) return;
 
     const details = formRef.current.value;
-    const formData = {massages: treatedAreas, treatmentInfo: details};
+    const formData = { massages: treatedAreas, treatmentInfo: details };
 
     setLoading(true);
     await updateTreatment(formData, state.treatmentId, dispatch);
     setLoading(false);
 
-    const isTreated = (treatedAreas.leftFlank.length || treatedAreas.rightFlank.length) > 0 ? true : false;
-    state.treatment = {...formData, treated: isTreated};
-    document.getElementById("content").scrollTo({top:0, left:0, behavior:"smooth"});
+    state.treatment = {...formData, treated: isTreated()};
+
+    scrollToTop();
   };
 
   const submitNewTreatment = async () => {
-    const confirm = await confirmService.show({btnLabel: "Tallenna", message: "Tallenna uutena hoitona?"});
+    const confirm = await confirmService.show({
+      btnLabel: "Tallenna",
+      message: "Tallenna uutena hoitona?",
+    });
     if (!confirm) return;
 
-    const treatment = {...state, treatment: {massages: treatedAreas, treatmentInfo: formRef.current.value}};
+    const treatment = {
+      ...state,
+      treatment: {
+        massages: treatedAreas,
+        treatmentInfo: formRef.current.value,
+      },
+    };
 
     setLoading(true);
     const res = await postNewTreatment(treatment, dispatch);
@@ -48,13 +68,22 @@ const TreatmentDetails = (props) => {
       pathname: "/hoidot/hoitotiedot/" + res.treatmentId,
       state: res
     });
-    document.getElementById("content").scrollTo({top:0, left:0, behavior:"smooth"});
+
+    scrollToTop();
   };
 
   const submitDeleteTreatment = async () => {
-    const isTreated = (treatedAreas.leftFlank.length || treatedAreas.rightFlank.length) > 0 ? true : false;
-    if (isTreated) return await confirmService.show({btnLabel: "OK", message: "Hoito sisältää hierontoja! Tyhjennä hierontatiedot ennen poistamista."});
-    const confirm = await confirmService.show({btnLabel: "Poista", message: "Vahvista poisto kirjoittamalla POISTA", confDeletion: true});
+    if (isTreated())
+      return await confirmService.show({
+        btnLabel: "OK",
+        message: "Hoito sisältää hierontoja! Tyhjennä hierontatiedot ennen poistamista.",
+      });
+
+    const confirm = await confirmService.show({
+      btnLabel: "Poista",
+      message: "Vahvista poisto kirjoittamalla POISTA",
+      confDeletion: true,
+    });
     if (!confirm) return;
 
     setLoading(true);
@@ -62,13 +91,14 @@ const TreatmentDetails = (props) => {
     setLoading(false);
 
     if (res) props.history.replace("/hoidot");
-    document.getElementById("content").scrollTo({top:0, left:0, behavior:"smooth"});
+
+    scrollToTop();
   };
 
   if (!props.location.state) {
     props.history.push("/hoidot");
     return null;
-  }
+  };
 
   return (
     <div className="mx-auto pt-4 pb-5">
@@ -96,8 +126,8 @@ const TreatmentDetails = (props) => {
                 onChange={updateRows}
                 rows={setRows(state.treatment.treatmentInfo)}
               /> ) : (
-              (state.treatment.treatmentInfo || state.treatment.treated) ? state.treatment.treatmentInfo
-                : <p className="text-secondary my-2">Hoito vireillä</p>
+              state.treatment.treatmentInfo ? state.treatment.treatmentInfo
+                : <p className="text-secondary my-2">Ei havaintoja</p>
             )}
         />
       </Accordion>

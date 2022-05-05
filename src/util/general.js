@@ -16,3 +16,9 @@ export function setRows(text = "") {
   }
   return rows;
 }
+
+export function scrollToTop(behavior = "smooth", element = "content") {
+  document
+    .getElementById(element)
+    .scrollTo({ top: 0, left: 0, behavior: behavior });
+}
