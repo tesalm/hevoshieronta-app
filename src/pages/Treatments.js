@@ -1,15 +1,16 @@
 import { useContext, useEffect, useState } from "react";
-import { Button, Spinner, Card, Row, Col, Form } from "react-bootstrap";
+import { Button, Spinner, Form } from "react-bootstrap";
 import styles from "../styles/Treatments.module.css";
 import ContextProvider from "../store/context-reducer";
 import SearchBar from "../components/SearchBar";
+import TreatmentList from "../components/TreatmentList";
 import { getTreatments, getTreatmentsByDate, verifySession } from "../store/actions";
-import { OWNER, THERAPIST } from "../store/types";
+import { THERAPIST } from "../store/types";
 
 
 const Treatments = (props) => {
   const {state, dispatch} = useContext(ContextProvider);
-  const {treatments, profile} = state;
+  const {treatments} = state;
   const [loading, setLoading] = useState(treatments.length < 1);
   const [isMounted, setMount] = useState(false);
   const [filteredData, setFiltered] = useState(treatments);
@@ -48,37 +49,6 @@ const Treatments = (props) => {
     }
     if (query.length === 0) setFiltered(treatments);
   };
-
-  const routeChange = () => {
-    props.history.push("/hoitokortti");
-  };
-
-  const getTreatment = (treatment) => {
-    props.history.push({
-      pathname: "/hoidot/hoitotiedot/" + treatment.treatmentId,
-      state: treatment
-    });
-  };
-
-  const TreatmentCard = ({ card }) => (
-    <Card onClick={() => getTreatment(card)}
-      className={card.treatment.treated ? styles.cardReady : styles.card}>
-      <Card.Body className="p-3">
-        <Row>
-          <Col className="text-start nowrap">Hoito {card.treatmentId}</Col>
-          <Col className="text-end">{card.date}</Col>
-        </Row>
-        {profile.userType === OWNER ? (
-          <Card.Text className="text-start mt-0 nowrap">{card.horseName}</Card.Text> 
-        ) : (
-          <Row>
-            <Col className="text-start mt-0 nowrap">{card.owner}</Col>
-            <Col className="text-end mt-0 nowrap">{card.email}</Col>
-          </Row>
-        )}
-      </Card.Body>
-    </Card>
-  );
 
   const fetchTreatmentsByDate = async (event) => {
     event.preventDefault();
@@ -123,21 +93,12 @@ const Treatments = (props) => {
     <div className={styles.page}>
       <div className="px-3 pt-4 pb-5 bg-white border rounded shadow-sm">
         <h4>Hoidot</h4>
-        {(localStorage.role === THERAPIST) && <SearchTreatmentsByDate/>}
+        {localStorage.role === THERAPIST && <SearchTreatmentsByDate />}
         <SearchBar searchFilter={searchFilter} />
-        {loading ? <LoadingSpinner/> : treatments.length > 0 ? (
-          filteredData.length > 0 ? ( 
-            filteredData.map((card, index) => <TreatmentCard key={index} card={card} />)
+        {loading ? (
+          <LoadingSpinner />
           ) : (
-            <p className="text-center text-secondary mt-5">
-              Haku ei tuottanut tuloksia.
-            </p>
-          )
-        ) : (
-          <div className="text-center mb-4 mt-5">
-            <p className="text-secondary">Ei hoitoja</p>
-            {profile.userType === OWNER && <Button onClick={routeChange}>Täytä hoitohakemus</Button>}
-          </div>
+          <TreatmentList treatments={treatments} filtered={filteredData} />
         )}
       </div>
     </div>
