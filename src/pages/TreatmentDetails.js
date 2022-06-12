@@ -21,9 +21,7 @@ const TreatmentDetails = (props) => {
   useEffect(() => { verifySession(dispatch); }, []);
 
   const isTreated = () => {
-    if ((treatedAreas.leftFlank.length || treatedAreas.rightFlank.length) > 0)
-      return true;
-    return false;
+    return (treatedAreas.leftFlank.length || treatedAreas.rightFlank.length) > 0
   };
 
   const submitTreatmentUpdate = async () => {

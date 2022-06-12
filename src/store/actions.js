@@ -9,8 +9,8 @@ import {
   updateTreatmentApiRequest,
   updateAccountAuthApiRequest,
   updateProfileInfoApiRequest } from "../util/api";
-import { LOGIN, LOGOUT, LOADING, REQUEST_FAILURE, SET_TREATMENTS, NOTIFY, NEW_TREATMENT, DELETE_TREATMENT, SET_USER, UPDATE_ACCOUNT, UPDATE_PROFILE } from "./types";
-import jwtDecode from "jwt-decode";
+import { LOGIN, LOGOUT, LOADING, REQUEST_FAILURE, SET_TREATMENTS, NOTIFY, NEW_TREATMENT, 
+  DELETE_TREATMENT, SET_USER, UPDATE_ACCOUNT, UPDATE_PROFILE } from "./types";
 
 export async function signinUser(credentials, history, dispatch, isNewUser=false) {
   dispatch({type: LOADING});
@@ -34,7 +34,6 @@ export async function signinUser(credentials, history, dispatch, isNewUser=false
 
 
 export async function getTreatments(dispatch, role) {
-  //dispatch({ type: LOADING });
   try {
     const data = await getTreatmentsApiRequest(role);
     dispatch({ type: SET_TREATMENTS, payload: data });
@@ -173,15 +172,14 @@ export async function getProfileData(dispatch) {
 
 
 export function verifySession(dispatch) {
-  const token = localStorage.FBIdToken;
-  if (token) {
-    const decodedToken = jwtDecode(token);
-    if (decodedToken.exp * 1000 < Date.now()) {
-      dispatch({ type: LOGOUT });
-      dispatch({
-        type: NOTIFY,
-        payload: { msg: "Istuntosi on vanhentunut", type: "danger" },
-      });
-    } else return true;
-  } return false;
+  const storedExpirationTime = localStorage.expirationTime;
+  if (storedExpirationTime) {
+    if (storedExpirationTime * 1000 > Date.now()) return true;
+  }
+  dispatch({type: LOGOUT});
+  dispatch({
+    type: NOTIFY,
+    payload: { msg: "Istuntosi on vanhentunut", type: "danger" },
+  });
+  return false;
 };

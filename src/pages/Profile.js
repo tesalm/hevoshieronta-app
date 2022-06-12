@@ -1,7 +1,7 @@
 import { useContext, useState, useEffect } from "react";
 import { FormControl, Form, Spinner, Row, Col } from "react-bootstrap";
 import ContextProvider from "../store/context-reducer";
-import { updateAccountAuth, updateProfileInfo, getProfileData, verifySession } from "../store/actions";
+import { updateAccountAuth, updateProfileInfo, getProfileData } from "../store/actions";
 import confirmService from '../components/confirm-service';
 
 
@@ -16,7 +16,6 @@ const Profile = (props) => {
   const [loadingAuth, setAuthLoad] = useState(false);
 
   useEffect(() => {
-    if (!verifySession(dispatch)) return;
     if ((name && address && phone) === null) {
       async function fetchProfile() {
         await getProfileData(dispatch);

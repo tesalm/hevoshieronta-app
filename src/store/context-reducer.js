@@ -1,8 +1,11 @@
-import { createContext, useReducer } from "react";
-import { LOGIN, LOGOUT, LOADING, REQUEST_FAILURE, SET_TREATMENTS, NEW_TREATMENT, DELETE_TREATMENT, SET_USER, SET_UNAUTHENTICATED, NOTIFY, UPDATE_PROFILE, UPDATE_ACCOUNT } from "./types";
+import { createContext, useReducer, useCallback, useEffect } from "react";
+import { LOGIN, LOGOUT, LOADING, REQUEST_FAILURE, SET_TREATMENTS, NEW_TREATMENT, 
+  DELETE_TREATMENT, SET_USER, SET_UNAUTHENTICATED, NOTIFY, UPDATE_PROFILE, UPDATE_ACCOUNT } from "./types";
+import jwtDecode from "jwt-decode";
 
 const ContextProvider = createContext();
 
+let logoutTimer;
 const initialState = {
   profile: {
     name: null,
@@ -77,6 +80,7 @@ const reducer = (state, action) => {
       }
     case LOGOUT:
       localStorage.clear();
+      if (logoutTimer) clearTimeout(logoutTimer);
       return {...initialState, isAuthenticated: false};
     case LOADING:
       return {
@@ -131,6 +135,34 @@ const reducer = (state, action) => {
 
 export function AppContextProvider(props) {
   const [state, dispatch] = useReducer(reducer, initialState);
+  const token = localStorage.getItem("FBIdToken");
+  
+  const logoutHandler = useCallback(() => {
+    dispatch({ type: LOGOUT });
+    dispatch({
+      type: NOTIFY,
+      payload: { msg: "Istuntosi on vanhentunut", type: "danger" },
+    });
+  }, []);
+
+  const userSessionManager = (token) => {
+    if (token) {
+      const decodedToken = jwtDecode(token);
+      const remainingTime = (decodedToken.exp * 1000 - Date.now());
+
+      // set user if remaining session time is over 15 min.
+      if (remainingTime/1000 > 900) dispatch({ type: SET_USER });
+      else return logoutHandler();
+
+      localStorage.setItem("expirationTime", decodedToken.exp);
+      logoutTimer = setTimeout(logoutHandler, remainingTime);
+    } else dispatch({ type: SET_UNAUTHENTICATED });
+  };
+
+  useEffect(() => {
+    userSessionManager(token);
+  }, [token, logoutHandler]);
+
   return (
     <ContextProvider.Provider value={{state, dispatch}}>
       {props.children}
