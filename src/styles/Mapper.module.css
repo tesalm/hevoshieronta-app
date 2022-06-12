@@ -33,11 +33,6 @@ p {
   text-align: left;
 }
 
-.mirrored {
-  -webkit-transform: scaleX(-1);
-  transform: scaleX(-1);
-}
-
 .flankStateTxt {
   text-overflow: ellipsis;
   overflow: hidden;
@@ -47,4 +42,29 @@ p {
   font-weight: bold;
   margin-top: 0;
   margin-bottom: 0;
+}
+
+.mirrored {
+  -webkit-transform: scaleX(-1);
+  transform: scaleX(-1);
+}
+
+.canvas {
+  position: relative;
+}
+
+@media (max-width: 576px) { /* extra small devices xs */
+  .canvas {
+    min-height: 200px;
+  }
+}
+@media (min-width: 576px) { /* small devices sm */
+  .canvas {
+    min-height: 300px;
+  }
+}
+@media (min-width: 768px) { /* medium devices md */
+  .canvas {
+    min-height: 420px;
+  }
 }

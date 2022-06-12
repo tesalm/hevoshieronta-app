@@ -3,7 +3,7 @@ import ImageMapper from "react-img-mapper";
 import { loadAreas } from "./map-area-data";
 import horse from "./horse-superficial-muscles.png";
 import styles from "../../styles/Mapper.module.css";
-import { Accordion, Button, Form } from "react-bootstrap";
+import { Accordion, Button, Form, Spinner } from "react-bootstrap";
 import AccordionItem from "../AccordionItem";
 import { setRows } from "../../util/general";
 import { massagesSchema } from "../../store/types";
@@ -14,6 +14,7 @@ const Mapper = ({treatments=massagesSchema, isReadOnly=true, setAreas}) => {
   const [width, setWidth] = useState();
   const [mirrored, setMirror] = useState(false);
   const [prevArea, setPrevArea] = useState(null);
+  const [loading, setLoading] = useState(true);
   const [map, setMap] = useState({name: "mapper", areas: loadAreas(treatments)});
   const [areaDescription, setAreaDescription] = useState({
     title: "",
@@ -70,9 +71,16 @@ const Mapper = ({treatments=massagesSchema, isReadOnly=true, setAreas}) => {
     setMap({...map, areas: areas});
   };
 
+  const LoadingSpinner = () => (
+    <div className="position-absolute top-50 start-50 translate-middle">
+      <Spinner animation="border" size="lg" variant="primary" />
+    </div>
+  );
+
   return (
     <div ref={parentRef} className={styles.mapper}>
-      <div className={mirrored ? styles.mirrored : ""}>
+      <div className={`${styles.canvas} ${mirrored && styles.mirrored}`}>
+        {loading && <LoadingSpinner />}
         <ImageMapper
           src={horse}
           map={map}
@@ -80,6 +88,7 @@ const Mapper = ({treatments=massagesSchema, isReadOnly=true, setAreas}) => {
           responsive={true}
           parentWidth={width}
           onClick={areaClickHandler}
+          onLoad={() => setLoading(false)}
         />
       </div>
 
