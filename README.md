@@ -1,4 +1,4 @@
-# Hevoshieronta-web
+# Hevoshieronta-client
 
 Freelance projektina toteutettu hevoshieronta palveluiden hallintaan tarkoitettu web-sovellus.
 
