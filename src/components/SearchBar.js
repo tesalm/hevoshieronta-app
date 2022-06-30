@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, memo } from "react";
 import { Button, CloseButton, Form, InputGroup } from "react-bootstrap";
 import { SEARCH_ICON } from "../store/types";
 
@@ -46,4 +46,4 @@ const SearchBar = ({ searchFilter }) => {
   );
 };
 
-export default SearchBar;
+export default memo(SearchBar);

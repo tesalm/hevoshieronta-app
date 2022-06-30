@@ -1,8 +1,9 @@
-import { useContext, useEffect, useState } from "react";
-import { Button, Spinner, Form } from "react-bootstrap";
+import { useContext, useEffect, useState, useCallback } from "react";
+import { Spinner } from "react-bootstrap";
 import styles from "../styles/Treatments.module.css";
 import ContextProvider from "../store/context-reducer";
 import SearchBar from "../components/SearchBar";
+import SearchByDate from "../components/SearchByDate";
 import TreatmentList from "../components/TreatmentList";
 import { getTreatments, getTreatmentsByDate, verifySession } from "../store/actions";
 import { THERAPIST } from "../store/types";
@@ -14,10 +15,6 @@ const Treatments = (props) => {
   const [loading, setLoading] = useState(treatments.length < 1);
   const [isMounted, setMount] = useState(false);
   const [filteredData, setFiltered] = useState(treatments);
-  const [range, setDateRange] = useState({
-    start: new Date(new Date().getFullYear(), 0, 1, 4).toISOString().split("T")[0], 
-    end: new Date().toISOString().split("T")[0]
-  });
 
   useEffect(() => {
     if (!verifySession(dispatch)) return;
@@ -33,7 +30,7 @@ const Treatments = (props) => {
     return () => { setMount(true) }; // component unmount
   }, []);
 
-  const searchFilter = (query) => {
+  const searchFilter = useCallback((query) => {
     let filtered = [];
     if (query.length > 1) {
       filtered = treatments.filter((item) => {
@@ -48,40 +45,14 @@ const Treatments = (props) => {
       setFiltered(filtered);
     }
     if (query.length === 0) setFiltered(treatments);
-  };
+  }, [treatments]);
 
-  const fetchTreatmentsByDate = async (event) => {
-    event.preventDefault();
-    const form = event.target;
-    setDateRange({start: form.start.value, end: form.end.value});
+  const fetchTreatmentsByDate = useCallback(async (startDate, endDate) => {
     setLoading(true);
-    const res = await getTreatmentsByDate(dispatch, form.start.value, form.end.value);
+    const res = await getTreatmentsByDate(dispatch, startDate, endDate);
     if (Array.isArray(res)) setFiltered(res);
     setLoading(false);
-  }
-
-  const SearchTreatmentsByDate = () => (
-    <Form onSubmit={fetchTreatmentsByDate}>
-      <div className="d-flex mb-1">
-        <Form.Control
-          required
-          type="date"
-          name="start"
-          defaultValue={range.start}
-          className="flex-grow-1 rounded-0"
-        />
-        <p className="pb-2 px-1 my-auto">__</p>
-        <Form.Control
-          required
-          type="date"
-          name="end"
-          defaultValue={range.end}
-          className="flex-grow-1 rounded-0"
-        />
-        <Button className="ms-1 rounded-0" type="submit">Hae</Button>
-      </div>
-    </Form>
-  );
+  }, []);
 
   const LoadingSpinner = () => (
     <div className="text-center">
@@ -93,11 +64,13 @@ const Treatments = (props) => {
     <div className={styles.page}>
       <div className="px-3 pt-4 pb-5 bg-white border rounded shadow-sm">
         <h4>Hoidot</h4>
-        {localStorage.role === THERAPIST && <SearchTreatmentsByDate />}
+        {localStorage.role === THERAPIST && (
+          <SearchByDate fetchByDate={fetchTreatmentsByDate} />
+        )}
         <SearchBar searchFilter={searchFilter} />
         {loading ? (
           <LoadingSpinner />
-          ) : (
+        ) : (
           <TreatmentList treatments={treatments} filtered={filteredData} />
         )}
       </div>
