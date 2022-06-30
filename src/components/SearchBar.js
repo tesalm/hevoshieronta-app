@@ -14,24 +14,35 @@ const SearchBar = ({ searchFilter }) => {
     searchFilter("");
   };
 
+  const submitHandler = (e) => {
+    e.preventDefault();
+    searchFilter(query);
+  };
+
   return (
-    <InputGroup className="mb-4 mx-auto align-items-stretch border">
-      <Form.Control
-        className="shadow-none border-0 "
-        placeholder="Haku"
-        value={query}
-        onChange={setQueryHandler}
-      />
-      <div className="bg-white d-flex">
-        <CloseButton
-          onClick={clearHandler}
-          className="my-auto px-3 shadow-none"
+    <Form onSubmit={submitHandler}>
+      <InputGroup className="mb-4 mx-auto align-items-stretch border">
+        <Form.Control
+          className="shadow-none border-0 "
+          placeholder="Haku"
+          value={query}
+          onChange={setQueryHandler}
         />
-      </div>
-      <Button className="shadow-none border-start bg-whitesmoke" variant="light" onClick={() => searchFilter(query)}>
-        <img src={SEARCH_ICON} height="28px" alt="Etsi"/>
-      </Button>
-    </InputGroup>
+        <div className="bg-white d-flex">
+          <CloseButton
+            onClick={clearHandler}
+            className="my-auto px-3 shadow-none"
+          />
+        </div>
+        <Button
+          className="shadow-none border-start bg-whitesmoke"
+          variant="light"
+          onClick={() => searchFilter(query)}
+        >
+          <img src={SEARCH_ICON} height="28px" alt="Etsi" />
+        </Button>
+      </InputGroup>
+    </Form>
   );
 };
 
