@@ -22,6 +22,7 @@ export const THERAPIST = "hoitaja";
 export const PROFILE_ICON = "https://res.cloudinary.com/djviqofzs/image/upload/v1636981580/hh-web/user_isgb6s.png";
 export const SEARCH_ICON = "https://res.cloudinary.com/djviqofzs/image/upload/v1636981572/hh-web/search_rvizet.png";
 export const LOGIN_ICON = "https://res.cloudinary.com/djviqofzs/image/upload/v1644250919/hh-web/lock_e5npxl.png";
+export const TURN_ICON = "https://res.cloudinary.com/djviqofzs/image/upload/v1656685250/hh-web/turn_zjj7hn.png";
 
 // DB schemas
 export const massagesSchema = {

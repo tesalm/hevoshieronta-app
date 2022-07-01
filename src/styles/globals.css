@@ -13,7 +13,7 @@
 
 .btn-custom {
   width: 100px;
-  height: 40px;
+  padding: 10px;
   font-family: 'Roboto', sans-serif;
   font-size: 11px;
   text-transform: uppercase;

@@ -35,7 +35,7 @@ p {
 
 .flankStateTxt {
   text-overflow: ellipsis;
-  overflow: hidden;
+  overflow: visible;
   white-space: nowrap;
   text-align: center;
   font-style: italic;
@@ -67,4 +67,25 @@ p {
   .canvas {
     min-height: 420px;
   }
+}
+
+.turnBtn {
+  width: 50px;
+  padding: 3px;
+  margin-left: auto;
+  background-color: transparent;
+  cursor: pointer;
+  border: 1px solid #e2e8f0;
+  border-radius: 4px !important;
+  transition: all 0.3s ease 0s;
+}
+
+.turnBtn:hover {
+  background-color: #2195f317;
+  border-color: #2196f3;
+}
+
+.turnIcon {
+  height: 22px;
+  transition: all 0.3s ease 0s;
 }

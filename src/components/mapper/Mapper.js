@@ -3,11 +3,11 @@ import ImageMapper from "react-img-mapper";
 import { loadAreas } from "./map-area-data";
 import horse from "./horse-superficial-muscles.png";
 import styles from "../../styles/Mapper.module.css";
-import { Accordion, Button, Form, Spinner } from "react-bootstrap";
+import { Accordion, Form, Spinner } from "react-bootstrap";
 import AccordionItem from "../AccordionItem";
 import { setRows } from "../../util/general";
 import { massagesSchema } from "../../store/types";
-
+import { TURN_ICON } from "../../store/types";
 
 const Mapper = ({treatments=massagesSchema, isReadOnly=true, setAreas}) => {
   const parentRef = useRef(null);
@@ -44,9 +44,9 @@ const Mapper = ({treatments=massagesSchema, isReadOnly=true, setAreas}) => {
     setMap({ ...map, areas: newData });
     setAreaDescription({
       title: area.title,
-      name: "(" + area.name + ")",
+      name: `(${area.name})`,
       description: area.description,
-      treatment: area.treatment
+      treatment: area.treatment,
     });
   };
 
@@ -104,9 +104,11 @@ const Mapper = ({treatments=massagesSchema, isReadOnly=true, setAreas}) => {
           </div>
         )}
         <div className="ps-2 d-flex flex-column justify-content-end">
-          <Button onClick={turnFlankHandler} variant="dark" className="py-1">
-            Käännä
-          </Button>
+          <button onClick={turnFlankHandler} className={styles.turnBtn}>
+            <img src={TURN_ICON} alt="Käännä"
+              className={`${styles.turnIcon} ${mirrored && styles.mirrored}`}
+            />
+          </button>
           <p className={styles.flankStateTxt}>{mirrored? "Oikea": "Vasen"} kylki</p>
         </div>
       </div>
