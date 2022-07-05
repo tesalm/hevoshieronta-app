@@ -1,4 +1,5 @@
 .mapper {
+  max-width: 42rem;
   height: auto;
   margin: auto;
 }

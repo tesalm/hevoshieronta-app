@@ -12,7 +12,6 @@ const Login = (props) => {
   const [user, setUser] = useState("");
   const [passw, setPassword] = useState("");
   const [showModal, setShowModal] = useState(false);
-  //console.log("Login page mounted", state.isAuthenticated);
 
   const validateForm = () => {
     return user.length > 0 && passw.length > 0;
@@ -42,7 +41,7 @@ const Login = (props) => {
         <p className="text-center">Tilaa salasanan vaihtolinkki sähköpostiosoitteeseen</p>
         <Form onSubmit={handleResetSubmit} >
           <Row xs="auto" sm="auto" className="justify-content-center mt-4 align-items-center">
-            <Col><FormLabel>Sähköposti (tilin tunnus)</FormLabel></Col>
+            <Col>Sähköposti (tilin tunnus)</Col>
             <Col xs={10} sm={5} className="px-0">
               <FormControl
                 placeholder="matti.meikäläinen@example.com"

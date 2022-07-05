@@ -2,8 +2,9 @@
   margin: auto;
   width: 92%;
   height: 100%;
-  max-width: 44rem;
+  max-width: 45rem;
   padding-top: 1.5rem;
+  padding-left: calc(100vw - 100%); /* prevent scrollbar from repositioning page */
 }
 
 .container {

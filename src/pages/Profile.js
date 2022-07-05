@@ -71,9 +71,9 @@ const Profile = (props) => {
   };
 
   return (
-    <div>
-      <Form onSubmit={profileInfoSubmit} className="border rounded shadow-sm p-3 pt-4 mb-4 bg-white">
-      <h4>Profiilin tiedot</h4>
+    <div style={{maxWidth:"42rem", margin:"auto"}}>
+      <Form onSubmit={profileInfoSubmit} className="border rounded shadow-sm p-3 pt-4 mb-2 bg-white">
+        <h4>Profiilin tiedot</h4>
         <Row className="mb-2">
           <Col xs="auto" sm={4} lg={3} className="pe-0">
             <p className="my-1">Nimi</p>

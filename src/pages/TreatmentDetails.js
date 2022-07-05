@@ -71,11 +71,13 @@ const TreatmentDetails = (props) => {
   };
 
   const submitDeleteTreatment = async () => {
-    if (isTreated())
-      return await confirmService.show({
-        btnLabel: "OK",
-        message: "Hoito sisältää hierontoja! Tyhjennä hierontatiedot ennen poistamista.",
+    if (isTreated()) {
+      const confirmContinue = await confirmService.show({
+        btnLabel: "Jatka",
+        message: "Hoito sisältää hierontoja!",
       });
+      if (!confirmContinue) return;
+    }
 
     const confirm = await confirmService.show({
       btnLabel: "Poista",
@@ -94,12 +96,12 @@ const TreatmentDetails = (props) => {
   };
 
   if (!props.location.state) {
-    props.history.push("/hoidot");
+    props.history.replace("/hoidot");
     return null;
   };
 
   return (
-    <div className="mx-auto pt-4 pb-5">
+    <div className="mx-auto pt-4 pb-5" style={{maxWidth:"42rem"}}>
       <h4>{state.horseName} hoitotiedot</h4>
       <Mapper
         treatments={treatedAreas}

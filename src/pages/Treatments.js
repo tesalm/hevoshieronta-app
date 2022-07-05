@@ -62,18 +62,16 @@ const Treatments = (props) => {
 
   return (
     <div className={styles.page}>
-      <div className="px-3 pt-4 pb-5 bg-white border rounded shadow-sm">
-        <h4>Hoidot</h4>
-        {localStorage.role === THERAPIST && (
-          <SearchByDate fetchByDate={fetchTreatmentsByDate} />
-        )}
-        <SearchBar searchFilter={searchFilter} />
-        {loading ? (
-          <LoadingSpinner />
-        ) : (
-          <TreatmentList treatments={treatments} filtered={filteredData} />
-        )}
-      </div>
+      <h4>Hoidot</h4>
+      {localStorage.role === THERAPIST && (
+        <SearchByDate fetchByDate={fetchTreatmentsByDate} />
+      )}
+      <SearchBar searchFilter={searchFilter} />
+      {loading ? (
+        <LoadingSpinner />
+      ) : (
+        <TreatmentList treatments={treatments} filtered={filteredData} />
+      )}
     </div>
   );
 };

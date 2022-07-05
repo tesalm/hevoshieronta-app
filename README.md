@@ -9,10 +9,10 @@ Uusien hoitojen vienti tietokantaan ja demo datan muokkaus on estetty.
 
 - Hoitajan kirjautumistiedot:  
 `Tunnus: hoitaja@hh.fi`  
-`Salasana: 123456`
+`Salasana: p01234`
 - Asiakkaan kirjautumistiedot:  
 `Tunnus: kayttaja@hh.fi`  
-`Salasana: 123456`
+`Salasana: p12345`
 
 ## Toiminnallisuuden kuvaus
 Asiakas kirjautuu/rekisteröityy hoitopalveluun ja luo hoitopyynnön täyttämällä hoitokortin. Hoitokortin lähetettyä, palvelu ilmoittaa hoitajalle uuden hoitopyynnön saapumisesta sähköpostitse.
