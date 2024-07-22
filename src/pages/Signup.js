@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import styles from "../styles/Login.module.css";
 import ContextProvider from "../store/context-reducer";
 import { signinUser } from "../store/actions";
+import { messages } from "../util";
 
 
 const Signup = (props) => {
@@ -29,20 +30,20 @@ const Signup = (props) => {
     if (credentials.password !== credentials.confirmPassw) {
       dispatch({
         type: "NOTIFY",
-        payload: { msg: "Salasanat eivät täsmää.", type: "warning" },
+        payload: { msg: messages.passwordMatchError, type: "warning" },
       });
       return;
     }
 
-    await signinUser(newUserData, props.history, dispatch, true);
+    await signinUser(newUserData, dispatch, true);
   };
 
     return (
       <div className={styles.login}>
         <Form onSubmit={handleSubmit} className="bg-white border rounded shadow-sm p-3">
-          <h4>Rekisteröi tilisi</h4>
+          <h4>{messages.registerAccount}</h4>
           <FormGroup className="mb-3 mt-2" controlId="user">
-            <FormLabel className="text-secondary mb-1">Sähköposti</FormLabel>
+            <FormLabel className="text-secondary mb-1">{messages.email}</FormLabel>
             <FormControl
               type="email"
               maxLength={60}
@@ -54,7 +55,7 @@ const Signup = (props) => {
           </FormGroup>
 
           <FormGroup className="mb-3" controlId="password">
-            <FormLabel className="text-secondary mb-1">Salasana</FormLabel>
+            <FormLabel className="text-secondary mb-1">{messages.password}</FormLabel>
             <FormControl
               type="password"
               maxLength={40}
@@ -66,7 +67,7 @@ const Signup = (props) => {
           </FormGroup>
 
           <FormGroup className="mb-4" controlId="confirmPassword">
-            <FormLabel className="text-secondary mb-1">Vahvista salasana</FormLabel>
+            <FormLabel className="text-secondary mb-1">{messages.confirmPassword}</FormLabel>
             <FormControl
               type="password"
               maxLength={40}
@@ -83,12 +84,12 @@ const Signup = (props) => {
               className="shadow-none rounded-pill"
               type="submit"
             >
-              {state.loading ? <Spinner animation="border" size="sm" /> : "Rekisteröidy"}
+              {state.loading ? <Spinner animation="border" size="sm" /> : messages.signup}
             </Button>
           </div>
 
           <small>
-            Onko sinulla jo tili ? <Link to="/kirjaudu">Kirjaudu sisään</Link>
+            {messages.alreadyHaveAccount} <Link to="/kirjaudu">{messages.signin}</Link>
           </small>
         </Form>
       </div>

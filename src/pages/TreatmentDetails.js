@@ -3,105 +3,107 @@ import { Form, Spinner, Accordion } from "react-bootstrap";
 import Mapper from "../components/mapper/Mapper";
 import TreatmentForm from "../components/TreatmentForm";
 import AccordionItem from "../components/AccordionItem";
-import confirmService from "../components/confirm-service";
 import ContextProvider from "../store/context-reducer";
 import { updateTreatment, postNewTreatment, deleteTreatment, verifySession } from "../store/actions";
 import { THERAPIST, massagesSchema } from "../store/types";
 import { setRows, updateRows, scrollToTop } from "../util/general";
-
+import { useLocation, useNavigate } from "react-router-dom";
+import ConfirmDialog from "../components/ConfirmDialog";
+import { messages, useDialog } from "../util";
 
 const TreatmentDetails = (props) => {
   const {dispatch} = useContext(ContextProvider);
   const formRef = useRef(null);
-  const {state} = props.location;
+  const { state } = useLocation();
+  const navigate = useNavigate();
+  const dialog = useDialog();
+  
   const [loading, setLoading] = useState(false);
   const [treatedAreas, setAreas] = useState(state ? state.treatment.massages : massagesSchema);
   const isReadOnly = localStorage.role === THERAPIST ? false : true;
 
-  useEffect(() => { verifySession(dispatch); }, []);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(() => { verifySession(dispatch) }, []);
 
   const isTreated = () => {
     return (treatedAreas.leftFlank.length || treatedAreas.rightFlank.length) > 0
   };
 
   const submitTreatmentUpdate = async () => {
-    const confirm = await confirmService.show({
-      btnLabel: "Tallenna",
-      message: "Tallenna hoitotiedot?",
+    dialog.openDialogWithProps({
+      okBtnLabel: messages.save,
+      message: messages.saveTreatmentData,
+      onOkButtonClick: async () => {
+        const details = formRef.current.value;
+        const formData = { massages: treatedAreas, treatmentInfo: details };
+
+        setLoading(true);
+        await updateTreatment(formData, state.treatmentId, dispatch);
+        setLoading(false);
+
+        state.treatment = { ...formData, treated: isTreated() };
+        scrollToTop();
+      },
     });
-    if (!confirm) return;
-
-    const details = formRef.current.value;
-    const formData = { massages: treatedAreas, treatmentInfo: details };
-
-    setLoading(true);
-    await updateTreatment(formData, state.treatmentId, dispatch);
-    setLoading(false);
-
-    state.treatment = {...formData, treated: isTreated()};
-
-    scrollToTop();
   };
 
   const submitNewTreatment = async () => {
-    const confirm = await confirmService.show({
-      btnLabel: "Tallenna",
-      message: "Tallenna uutena hoitona?",
-    });
-    if (!confirm) return;
-
-    const treatment = {
-      ...state,
-      treatment: {
-        massages: treatedAreas,
-        treatmentInfo: formRef.current.value,
+    dialog.openDialogWithProps({
+      okBtnLabel: messages.save,
+      message: messages.saveAsNewTreatment,
+      onOkButtonClick: async () => {
+        const treatment = {
+          ...state,
+          treatment: {
+            massages: treatedAreas,
+            treatmentInfo: formRef.current.value,
+          },
+        };
+        setLoading(true);
+        const res = await postNewTreatment(treatment, dispatch);
+        setLoading(false);
+    
+        navigate("/hoidot/hoitotiedot/" + res.treatmentId, {
+          replace: true,
+          state: res,
+        });
+        scrollToTop();
       },
-    };
-
-    setLoading(true);
-    const res = await postNewTreatment(treatment, dispatch);
-    setLoading(false);
-
-    props.history.replace({
-      pathname: "/hoidot/hoitotiedot/" + res.treatmentId,
-      state: res
     });
-
-    scrollToTop();
   };
 
   const submitDeleteTreatment = async () => {
+    const confirmDeleteDialogProps = {
+      okBtnLabel: messages.delete,
+      message: messages.confirmDeleteWrite,
+      confirmDeletion: true,
+      onOkButtonClick: async () => {
+        setLoading(true);
+        const res = await deleteTreatment(state.treatmentId, dispatch);
+        setLoading(false);
+        if (res) navigate("/hoidot", { replace: true });
+        scrollToTop();
+      },
+    };
     if (isTreated()) {
-      const confirmContinue = await confirmService.show({
-        btnLabel: "Jatka",
-        message: "Hoito sisältää hierontoja!",
+      dialog.openDialogWithProps({
+        okBtnLabel: messages.continue,
+        message: messages.hasTreatments,
+        onOkButtonClick: () =>
+          dialog.openDialogWithProps(confirmDeleteDialogProps),
       });
-      if (!confirmContinue) return;
+    } else {
+      dialog.openDialogWithProps(confirmDeleteDialogProps);
     }
-
-    const confirm = await confirmService.show({
-      btnLabel: "Poista",
-      message: "Vahvista poisto kirjoittamalla POISTA",
-      confDeletion: true,
-    });
-    if (!confirm) return;
-
-    setLoading(true);
-    const res = await deleteTreatment(state.treatmentId, dispatch);
-    setLoading(false);
-
-    if (res) props.history.replace("/hoidot");
-
-    scrollToTop();
   };
 
-  if (!props.location.state) {
-    props.history.replace("/hoidot");
+  if (!state) {
+    navigate("/hoidot", { replace: true });
     return null;
   };
 
   return (
-    <div className="mx-auto pt-4 pb-5" style={{maxWidth:"42rem"}}>
+    <div className="mx-auto pt-4 pb-5" style={{ maxWidth: "42rem" }}>
       <h4>{state.horseName} hoitotiedot</h4>
       <Mapper
         treatments={treatedAreas}
@@ -116,35 +118,56 @@ const TreatmentDetails = (props) => {
         />
         <AccordionItem
           ekey="1"
-          header={<p className="pe-3 m-0 nowrap">Hieronnat/Havainnot/Hoitosuunnitelma</p>}
+          header={
+            <p className="pe-3 m-0 nowrap">
+              Hieronnat/Havainnot/Hoitosuunnitelma
+            </p>
+          }
           bodyStyle={!isReadOnly ? "p-2" : "p-3"}
-          body={isReadOnly === false ? (
+          body={
+            isReadOnly === false ? (
               <Form.Control
                 ref={formRef}
                 defaultValue={state.treatment.treatmentInfo}
                 as="textarea"
                 onChange={updateRows}
                 rows={setRows(state.treatment.treatmentInfo)}
-              /> ) : (
-              state.treatment.treatmentInfo ? state.treatment.treatmentInfo
-                : <p className="text-secondary my-2">Ei havaintoja</p>
-            )}
+              />
+            ) : state.treatment.treatmentInfo ? (
+              state.treatment.treatmentInfo
+            ) : (
+              <p className="text-secondary my-2">{messages.noFindings}</p>
+            )
+          }
         />
       </Accordion>
 
       {isReadOnly === false && (
         <div className="d-flex justify-content-end">
-          <button onClick={submitDeleteTreatment} disabled={loading} className="btn-custom danger me-auto">
-            {loading ? <Spinner animation="border" size="sm" /> : "Poista"}
+          <button
+            onClick={submitDeleteTreatment}
+            disabled={loading}
+            className="btn-custom danger me-auto"
+          >
+            {loading ? <Spinner animation="border" size="sm" /> : messages.delete}
           </button>
-          <button onClick={submitNewTreatment} disabled={loading} className="btn-custom me-2">
-            {loading ? <Spinner animation="border" size="sm" /> : "Uusi hoito"}
+          <button
+            onClick={submitNewTreatment}
+            disabled={loading}
+            className="btn-custom me-2"
+          >
+            {loading ? <Spinner animation="border" size="sm" /> : messages.newTreatment}
           </button>
-          <button onClick={submitTreatmentUpdate} disabled={loading} className="btn-custom">
-            {loading ? <Spinner animation="border" size="sm" /> : "Tallenna"}
+          <button
+            onClick={submitTreatmentUpdate}
+            disabled={loading}
+            className="btn-custom"
+          >
+            {loading ? <Spinner animation="border" size="sm" /> : messages.save}
           </button>
         </div>
       )}
+      <ConfirmDialog {...dialog} />
     </div>
   );
 };

@@ -12,7 +12,7 @@ import {
 import { LOGIN, LOGOUT, LOADING, REQUEST_FAILURE, SET_TREATMENTS, NOTIFY, NEW_TREATMENT, 
   DELETE_TREATMENT, SET_USER, UPDATE_ACCOUNT, UPDATE_PROFILE } from "./types";
 
-export async function signinUser(credentials, history, dispatch, isNewUser=false) {
+export async function signinUser(credentials, dispatch, isNewUser=false) {
   dispatch({type: LOADING});
   try {
     const data = await signinApiRequest(credentials, isNewUser);
@@ -23,7 +23,6 @@ export async function signinUser(credentials, history, dispatch, isNewUser=false
         token: data.token,
       },
     });
-    history.push("/hoidot");
 
   } catch (err) {
     const pload = err.cause ? { err: err.message, code: err.cause }

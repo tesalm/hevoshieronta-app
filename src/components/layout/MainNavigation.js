@@ -1,20 +1,21 @@
 import { useContext, useState } from "react";
 import { Navbar, Container, Nav, NavDropdown } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import ContextProvider from "../../store/context-reducer";
 import { PROFILE_ICON, LOGIN_ICON, LOGOUT } from "../../store/types";
 import styles from "../../styles/MainNavigation.module.css";
+import { messages } from "../../util";
 
 function MainNavigation() {
-  const history = useHistory();
+  const navigate = useNavigate();
   const {state, dispatch} = useContext(ContextProvider);
   const [expanded, toggleNav] = useState(false);
 
   const logoutHandler = () => {
     dispatch({type: LOGOUT});
-    history.push("/kirjaudu");
+    navigate("/kirjaudu");
   };
 
   return (
@@ -24,21 +25,21 @@ function MainNavigation() {
         onToggle={(exp) => toggleNav(exp)} expanded={expanded}
       >
         <Container fluid="xl">
-          <LinkContainer to="/" exact className={styles.navbrand}>
-            <Navbar.Brand>Hevoshieronta</Navbar.Brand>
+          <LinkContainer to="/" className={styles.navbrand}>
+            <Navbar.Brand>{messages.appTitle}</Navbar.Brand>
           </LinkContainer>
           <Navbar.Toggle aria-controls="basic-navbar-nav" className="shadow-none"/>
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="mx-auto">
-              <LinkContainer to="/lihasryhmat" exact>
-                <Nav.Link>Lihasryhmät</Nav.Link>
+              <LinkContainer to="/lihasryhmat">
+                <Nav.Link>{messages.muscleGroups}</Nav.Link>
               </LinkContainer>
-              <LinkContainer to="/hoitokortti" exact>
-                <Nav.Link>Hoitokortti</Nav.Link>
+              <LinkContainer to="/hoitokortti">
+                <Nav.Link>{messages.treatmentCard}</Nav.Link>
               </LinkContainer>
               {state.isAuthenticated && ( 
-                <LinkContainer to="/hoidot" exact>
-                  <Nav.Link>Hoidot</Nav.Link>
+                <LinkContainer to="/hoidot">
+                  <Nav.Link>{messages.treatments}</Nav.Link>
                 </LinkContainer>
               )}
             </Nav>
@@ -51,17 +52,17 @@ function MainNavigation() {
                   onSelect={() => toggleNav(false)}
                 >
                   <LinkContainer to="/profiili">
-                    <NavDropdown.Item>Oma profiili & tiedot</NavDropdown.Item>
+                    <NavDropdown.Item>{messages.myProfile}</NavDropdown.Item>
                   </LinkContainer>
                   <NavDropdown.Divider />
                   <NavDropdown.Item onClick={logoutHandler}>
-                    Kirjaudu ulos
+                    {messages.logout}
                   </NavDropdown.Item>
                 </NavDropdown>
                 </>) : (
-                <LinkContainer to="/kirjaudu" exact>
+                <LinkContainer to="/kirjaudu">
                   <Nav.Link>
-                    {<><img height="19px" className={styles.icon} src={LOGIN_ICON} alt=""/>Kirjaudu</>}
+                    {<><img height="19px" className={styles.icon} src={LOGIN_ICON} alt=""/>{messages.login}</>}
                   </Nav.Link>
                 </LinkContainer>
               )}

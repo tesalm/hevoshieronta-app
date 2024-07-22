@@ -2,11 +2,13 @@ import { useContext, useState, useEffect } from "react";
 import { FormControl, Form, Spinner, Row, Col } from "react-bootstrap";
 import ContextProvider from "../store/context-reducer";
 import { updateAccountAuth, updateProfileInfo, getProfileData } from "../store/actions";
-import confirmService from '../components/confirm-service';
+import ConfirmDialog from "../components/ConfirmDialog";
+import { messages, useDialog } from "../util";
 
 
 const Profile = (props) => {
   const {state, dispatch} = useContext(ContextProvider);
+  const dialog = useDialog();
   const { name, address, phone } = state.profile;
   const [user, setUser] = useState(localStorage.user? localStorage.user : "");
   const [passw, setPassword] = useState("");
@@ -23,7 +25,7 @@ const Profile = (props) => {
       }
       fetchProfile();
     }
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const validateAuthForm = () => {
     if (newPassw.length > 0 || confPassw.length > 0)
@@ -36,47 +38,56 @@ const Profile = (props) => {
     const credentials = {
       newEmail: event.target.email.value,
       password: event.target.currentPassw.value,
-      newPassword: event.target.newPassw.value
+      newPassword: event.target.newPassw.value,
     };
 
     if (credentials.newPassword !== event.target.confNewPassw.value) {
       dispatch({
         type: "NOTIFY",
-        payload: { msg: "Salasanat eivät täsmää.", type: "warning" },
+        payload: { msg: messages.passwordMatchError, type: "warning" },
       });
       return;
     }
-    const confirm = await confirmService.show({btnLabel: "Tallenna", message: "Vaihda tilin tunnistetiedot?"});
-    if (!confirm) return;
-
-    setAuthLoad(true);
-    await updateAccountAuth(credentials, dispatch);
-    setAuthLoad(false);
+    dialog.openDialogWithProps({
+      okBtnLabel: messages.save,
+      message: messages.updateAccountAuthData,
+      onOkButtonClick: async () => {
+        setAuthLoad(true);
+        await updateAccountAuth(credentials, dispatch);
+        setAuthLoad(false);
+      },
+    });
   };
 
   const profileInfoSubmit = async (event) => {
     event.preventDefault();
-    const confirm = await confirmService.show({btnLabel: "Tallenna", message: "Vaihda profiilin tiedot?"});
-    if (!confirm) return;
+    dialog.openDialogWithProps({
+      okBtnLabel: messages.save,
+      message: messages.updateProfileData,
+      onOkButtonClick: async () => {
+        const profileInfo = {
+          name: event.target.name.value,
+          address: event.target.address.value,
+          phone: event.target.phone.value,
+        };
 
-    const profileInfo = {
-      name: event.target.name.value,
-      address: event.target.address.value,
-      phone: event.target.phone.value
-    };
-
-    setProfLoad(true);
-    await updateProfileInfo(profileInfo, dispatch);
-    setProfLoad(false);
+        setProfLoad(true);
+        await updateProfileInfo(profileInfo, dispatch);
+        setProfLoad(false);
+      },
+    });
   };
 
   return (
-    <div style={{maxWidth:"42rem", margin:"auto"}}>
-      <Form onSubmit={profileInfoSubmit} className="border rounded shadow-sm p-3 pt-4 mb-2 bg-white">
-        <h4>Profiilin tiedot</h4>
+    <div style={{ maxWidth: "42rem", margin: "auto" }}>
+      <Form
+        onSubmit={profileInfoSubmit}
+        className="border rounded shadow-sm p-3 pt-4 mb-2 bg-white"
+      >
+        <h4>{messages.profileData}</h4>
         <Row className="mb-2">
           <Col xs="auto" sm={4} lg={3} className="pe-0">
-            <p className="my-1">Nimi</p>
+            <p className="my-1">{messages.name}</p>
           </Col>
           <Col xs={12} sm={8} lg={9}>
             <FormControl
@@ -90,7 +101,7 @@ const Profile = (props) => {
 
         <Row className="mb-2">
           <Col xs="auto" sm={4} lg={3} className="pe-0">
-            <p className="my-1">Osoite</p>
+            <p className="my-1">{messages.address}</p>
           </Col>
           <Col xs={12} sm={8} lg={9}>
             <FormControl
@@ -104,7 +115,7 @@ const Profile = (props) => {
 
         <Row className="mb-2">
           <Col xs="auto" sm={4} lg={3} className="pe-0">
-            <p className="my-1">Puhelinnumero</p>
+            <p className="my-1">{messages.phonenumber}</p>
           </Col>
           <Col xs={12} sm={8} lg={9}>
             <FormControl
@@ -120,18 +131,24 @@ const Profile = (props) => {
           <button type="submit" className="btn-custom mt-2">
             {loadingProf ? (
               <Spinner animation="border" size="sm" />
-              ) : (
-              "Tallenna"
+            ) : (
+              messages.save
             )}
           </button>
         </div>
       </Form>
 
-      <Form onSubmit={accountAuthSubmit} className="border rounded shadow-sm p-3 pt-4 mb-3 bg-white">
-        <h4>Tilin tiedot</h4>
+      <Form
+        onSubmit={accountAuthSubmit}
+        className="border rounded shadow-sm p-3 pt-4 mb-3 bg-white"
+      >
+        <h4>{messages.accountDetails}</h4>
         <Row className="mb-4">
           <Col xs="auto" sm={4} lg={3} className="pe-0">
-            <p className="my-1">Nykyinen salasana <span style={{color:"red"}}>*</span></p>
+            <p className="my-1">
+              {messages.currentPassword}
+              <span style={{ color: "red" }}>*</span>
+            </p>
           </Col>
           <Col xs={12} sm={8} lg={9}>
             <FormControl
@@ -142,14 +159,17 @@ const Profile = (props) => {
               onChange={(event) => setPassword(event.target.value)}
             />
             <small className="text-secondary">
-              Kirjoita nykyinen salasanasi vaihtaaksesi seuraavat: Sähköpostiosoite tai Salasana.
+              {messages.enterCurrentPassword}
             </small>
           </Col>
         </Row>
 
         <Row className="mb-4">
           <Col xs="auto" sm={4} lg={3} className="pe-0">
-            <p className="my-1">Sähköpostiosoite <span style={{color:"red"}}>*</span></p>
+            <p className="my-1">
+              {messages.emailAddress}
+              <span style={{ color: "red" }}>*</span>
+            </p>
           </Col>
           <Col xs={12} sm={8} lg={9}>
             <FormControl
@@ -161,14 +181,14 @@ const Profile = (props) => {
               onChange={(event) => setUser(event.target.value)}
             />
             <small className="text-secondary">
-              Syötä toimiva sähköpostiosoite. Sähköpostiosoitteesi ei näy missään julkisesti ja sitä käytetään vain kirjautumisen tunnuksena ja salasanasi päivittämiseen.
+              {messages.enterValidEmail}
             </small>
           </Col>
         </Row>
 
         <Row className="mb-2">
           <Col xs="auto" sm={4} lg={3} className="pe-0">
-            <p className="my-1">Uusi salasana</p>
+            <p className="my-1">{messages.newPassword}</p>
           </Col>
           <Col xs={12} sm={8} lg={9}>
             <FormControl
@@ -181,7 +201,7 @@ const Profile = (props) => {
         </Row>
         <Row>
           <Col xs="auto" sm={4} lg={3} className="pe-0">
-            <p className="my-1">Vahvista salasana</p>
+            <p className="my-1">{messages.confirmPassword}</p>
           </Col>
           <Col xs={12} sm={8} lg={9}>
             <FormControl
@@ -191,21 +211,26 @@ const Profile = (props) => {
               onChange={(event) => setConfPassword(event.target.value)}
             />
             <small className="text-secondary">
-              Kirjoita uusi salasana yllä oleviin kenttiin. Salasanassa on oltava vähintään 6 merkkiä. (Valinnainen)
+              {messages.enterNewPassword}
             </small>
           </Col>
         </Row>
 
         <div className="d-flex justify-content-end">
-          <button disabled={!validateAuthForm()} type="submit" className="btn-custom mt-2">
+          <button
+            disabled={!validateAuthForm()}
+            type="submit"
+            className="btn-custom mt-2"
+          >
             {loadingAuth ? (
               <Spinner animation="border" size="sm" />
-              ) : (
-              "Tallenna"
+            ) : (
+              messages.save
             )}
           </button>
         </div>
       </Form>
+      <ConfirmDialog {...dialog} />
     </div>
   );
 };

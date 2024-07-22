@@ -9,7 +9,7 @@ import { setRows } from "../../util/general";
 import { massagesSchema } from "../../store/types";
 import { TURN_ICON } from "../../store/types";
 
-const Mapper = ({treatments=massagesSchema, isReadOnly=true, setAreas}) => {
+const Mapper = ({treatments=massagesSchema, isReadOnly=true, setAreas = () => {}}) => {
   const parentRef = useRef(null);
   const [width, setWidth] = useState();
   const [mirrored, setMirror] = useState(false);

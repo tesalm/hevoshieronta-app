@@ -1,57 +1,84 @@
 import { useContext } from "react";
-import { Route, Switch, Redirect } from "react-router-dom";
+import { Route, Routes, BrowserRouter, Navigate } from "react-router-dom";
 import Layout from "./components/layout/Layout";
-import { Login, Signup, Profile, NotFound, NewTreatment, Treatments, TreatmentDetails, MuscleGroups } from "./pages";
-import AuthRoute from "./util/AuthRoute";
+import {
+  Login,
+  Signup,
+  Profile,
+  NotFound,
+  NewTreatment,
+  Treatments,
+  TreatmentDetails,
+  MuscleGroups,
+} from "./pages";
 import ContextProvider from "./store/context-reducer";
-
+import { RequireAuth } from "./util/RequireAuth";
 
 function App() {
   const { state } = useContext(ContextProvider);
 
   return (
-    <Layout>
-      <Switch>
-        {/* Redirect to the Treatments page, until home page is complete */}
-        <Redirect exact from="/" to="/hoidot" />
-
-        <Route exact path="/kirjaudu" component={Login}>
-          {state.isAuthenticated === true && <Redirect to="/hoidot" />}
-        </Route>
-
-        <Route exact path="/rekisteroidy" component={Signup}>
-          {state.isAuthenticated === true && <Redirect to="/hoidot" />}
-        </Route>
-
-        <Route exact path="/lihasryhmat" component={MuscleGroups} />
-
-        <AuthRoute
-          authenticated={state.isAuthenticated}
-          exact
-          path="/hoitokortti"
-          component={NewTreatment}
-        />
-        <AuthRoute
-          authenticated={state.isAuthenticated}
-          exact
-          path="/hoidot"
-          component={Treatments}
-        />
-        <AuthRoute
-          authenticated={state.isAuthenticated}
-          path="/hoidot/hoitotiedot/:id"
-          component={TreatmentDetails}
-        />
-        <AuthRoute
-          authenticated={state.isAuthenticated}
-          path="/profiili"
-          component={Profile}
-        />
-
-        {/* Finally, catch all unmatched routes */}
-        <Route component={NotFound} />
-      </Switch>
-    </Layout>
+    <BrowserRouter>
+      <Layout>
+        <Routes>
+          <Route path="/" element={<Navigate to="/hoidot" replace />} />
+          <Route
+            path="/kirjaudu"
+            element={
+              state.isAuthenticated === true ? (
+                <Navigate to="/hoidot" replace />
+              ) : (
+                <Login />
+              )
+            }
+          />
+          <Route
+            path="/rekisteroidy"
+            element={
+              state.isAuthenticated === true ? (
+                <Navigate to="/hoidot" replace />
+              ) : (
+                <Signup />
+              )
+            }
+          />
+          <Route path="/lihasryhmat" element={<MuscleGroups />} />
+          <Route
+            path="/hoitokortti"
+            element={
+              <RequireAuth>
+                <NewTreatment />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/hoidot"
+            element={
+              <RequireAuth>
+                <Treatments />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/hoidot/hoitotiedot/:id"
+            element={
+              <RequireAuth>
+                <TreatmentDetails />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/profiili"
+            element={
+              <RequireAuth>
+                <Profile />
+              </RequireAuth>
+            }
+          />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </Layout>
+    </BrowserRouter>
   );
 }
 

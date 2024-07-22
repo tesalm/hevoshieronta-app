@@ -1,5 +1,5 @@
-const api = "https://europe-central2-hevoshieronta-info.cloudfunctions.net/api";
-//const api = "http://localhost:5000/hevoshieronta-info/europe-central2/api";
+const api = "https://europe-north1-hevoshieronta-info.cloudfunctions.net/api";
+//const api = "http://localhost:5000/hevoshieronta-info/europe-north1/api";
 
 export async function signinApiRequest(credentials, isNewUser = false) {
   const url = isNewUser ? `${api}/signup` : `${api}/login`;

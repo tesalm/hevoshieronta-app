@@ -5,7 +5,7 @@ import { OWNER } from "../store/types";
 
 const TreatmentCard = ({ treatment, role }) => {
   return (
-    <LinkContainer to={{pathname:`/hoidot/hoitotiedot/${treatment.treatmentId}`, state: treatment}}>
+    <LinkContainer state={treatment} to={`/hoidot/hoitotiedot/${treatment.treatmentId}`}>
       <div className={treatment.treatment.treated ? styles.cardReady : styles.card}>
         <Row>
           <Col className="text-start nowrap">Hoito {treatment.treatmentId}</Col>
